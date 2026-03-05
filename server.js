@@ -12,13 +12,65 @@ app.post('/submit', async (req, res) => {
   const TABLE_ID = 'tbl06d25rMXJpZUUo';
 
   try {
+    const raw = req.body;
+
+    // Parse companies JSON if it came in as a string
+    let companies = [];
+    try {
+      companies = typeof raw.Companies === 'string' ? JSON.parse(raw.Companies) : (raw.Companies || []);
+    } catch(e) { companies = []; }
+    const primary = companies[0] || {};
+    const secondary = companies.slice(1);
+
+    // Map to Airtable column names (flat structure matching existing table)
+    const fields = {
+      // Personal
+      'First Name':     raw['First Name'] || '',
+      'Last Name':      raw['Last Name'] || '',
+      'Email':          raw['Email'] || '',
+      'Phone':          raw['Phone'] || '',
+      'LinkedIn URL':   raw['LinkedIn URL'] || '',
+      'City':           raw['City'] || '',
+      'State':          raw['State'] || '',
+      'Country':        raw['Country'] || '',
+      'Member Role':    raw['Member Role'] || '',
+
+      // Primary company — flat columns
+      'Company':        primary.name || '',
+      'Title':          primary.title || '',
+      'Vertical':       primary.vertical || '',
+      'Stage':          primary.stage || '',
+      'Company Description': primary.description || '',
+
+      // Offer / seek — top-level columns
+      'What You Can Offer': raw['What You Can Offer'] || primary.can_offer || '',
+      'Offer Types':    raw['Offer Types'] || primary.offer_types || '',
+      'Looking For':    raw['Looking For'] || primary.looking_for || '',
+      'Seeking Types':  raw['Seeking Types'] || primary.seeking_types || '',
+
+      // Capital
+      'Deploying Capital':   raw['Deploying Capital'] || '',
+      'Check Size':          raw['Check Size'] || '',
+      'Preferred Stage':     raw['Preferred Stage'] || '',
+      'Preferred Verticals': raw['Preferred Verticals'] || '',
+
+      // Additional companies (2+) stored as JSON
+      'Companies': secondary.length > 0 ? JSON.stringify(secondary) : '',
+
+      'Additional Notes': raw['Additional Notes'] || '',
+      'Submitted At':     raw['Submitted At'] || new Date().toISOString()
+    };
+
+    // Remove empty strings to keep Airtable clean
+    Object.keys(fields).forEach(k => { if (fields[k] === '') delete fields[k]; });
+
     const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_ID}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${AIRTABLE_KEY}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ fields: req.body })
+      body: JSON.stringify({ fields })
     });
 
     const data = await response.json();

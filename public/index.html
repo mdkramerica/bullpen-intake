@@ -590,7 +590,9 @@
       });
     });
 
+    const primary = companies[0] || {};
     const fields = {
+      // Personal
       "First Name": payload.first_name || '',
       "Last Name": payload.last_name || '',
       "Email": payload.email || '',
@@ -600,12 +602,26 @@
       "State": payload.state || '',
       "Country": payload.country || '',
       "Member Role": payload.member_role || '',
-      "Companies": JSON.stringify(companies),
+      // Primary company — flat columns matching Airtable
+      "Company": primary.name || '',
+      "Title": primary.title || '',
+      "Vertical": primary.vertical || '',
+      "Stage": primary.stage || '',
+      "Company Description": primary.description || '',
+      // Offer / seek
+      "What You Can Offer": primary.can_offer || '',
+      "Offer Types": primary.offer_types || Array.isArray(payload.offer_type) ? (Array.isArray(payload.offer_type) ? payload.offer_type.join(', ') : payload.offer_type || '') : '',
+      "Looking For": primary.looking_for || '',
+      "Seeking Types": primary.seeking_types || Array.isArray(payload.seeking_type) ? (Array.isArray(payload.seeking_type) ? payload.seeking_type.join(', ') : payload.seeking_type || '') : '',
+      // Capital
       "Deploying Capital": payload.deploying_capital || '',
-      "Investment Mandate": payload.investment_mandate || '',
       "Check Size": payload.check_size || '',
       "Preferred Stage": payload.preferred_stage || '',
       "Preferred Verticals": Array.isArray(payload.inv_vertical) ? payload.inv_vertical.join(', ') : (payload.inv_vertical || ''),
+      // Additional companies (2+) as JSON, primary excluded
+      "Companies": companies.length > 1 ? JSON.stringify(companies.slice(1)) : '',
+      "Deploying Capital": payload.deploying_capital || '',
+      "Investment Mandate": payload.investment_mandate || '',
       "Investor Notes": payload.investor_notes || '',
       "What You Can Offer": payload.can_offer || '',
       "Offer Types": Array.isArray(payload.offer_type) ? payload.offer_type.join(', ') : (payload.offer_type || ''),
