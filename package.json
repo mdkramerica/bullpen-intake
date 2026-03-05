@@ -1,0 +1,12 @@
+{
+  "name": "bullpen-intake",
+  "version": "1.0.0",
+  "description": "BLPN Partnering Platform Beta Intake Form",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
