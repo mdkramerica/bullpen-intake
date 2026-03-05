@@ -151,8 +151,9 @@
         </div>
         <div class="field">
           <label>LinkedIn Profile URL <span class="required">*</span></label>
-          <input type="url" name="linkedin" placeholder="https://linkedin.com/in/yourname" required />
-          <p class="hint">We'll use this to pre-fill your profile — saves you time.</p>
+          <input type="url" name="linkedin" id="linkedinInput" placeholder="https://linkedin.com/in/yourname" required />
+          <div id="enrichStatus" style="display:none; margin-top:8px; font-size:13px; color:#E94B2B; display:flex; align-items:center; gap:8px;"></div>
+          <p class="hint" id="linkedinHint">Paste your LinkedIn URL — we'll auto-fill your company info on the next page.</p>
           <div class="field-error">Please enter your LinkedIn URL.</div>
         </div>
         <div class="two-col">
@@ -441,6 +442,113 @@
   addCompany(true);
   document.getElementById('addCompanyBtn').addEventListener('click', () => addCompany(false));
   updateProgress();
+
+  // ── LinkedIn Enrichment ──
+  let enrichedData = null;
+  let enrichTimer = null;
+
+  function showEnrichStatus(msg, color = '#E94B2B') {
+    const el = document.getElementById('enrichStatus');
+    el.style.display = 'flex';
+    el.style.color = color;
+    el.innerHTML = msg;
+  }
+
+  function hideEnrichStatus() {
+    document.getElementById('enrichStatus').style.display = 'none';
+  }
+
+  async function enrichLinkedIn(url) {
+    if (!url || !url.includes('linkedin.com/in/')) return;
+
+    showEnrichStatus('⏳ Looking up your LinkedIn profile…');
+
+    try {
+      const res = await fetch(`/enrich?linkedin_url=${encodeURIComponent(url)}`);
+      const json = await res.json();
+
+      if (!json.success || !json.profile) {
+        showEnrichStatus('⚠️ Couldn\'t find that profile — you can fill in manually.', '#8892a4');
+        return;
+      }
+
+      enrichedData = json.profile;
+      const p = json.profile;
+
+      // Pre-fill Step 1 fields that are still empty
+      const firstEl = document.querySelector('[name="first_name"]');
+      const lastEl = document.querySelector('[name="last_name"]');
+      const cityEl = document.querySelector('[name="city"]');
+      const stateEl = document.querySelector('[name="state"]');
+      const countryEl = document.querySelector('[name="country"]');
+      if (firstEl && !firstEl.value && p.first_name) firstEl.value = p.first_name;
+      if (lastEl && !lastEl.value && p.last_name) lastEl.value = p.last_name;
+      if (cityEl && !cityEl.value && p.city) cityEl.value = p.city;
+      if (stateEl && !stateEl.value && p.state) stateEl.value = p.state;
+      if (countryEl && !countryEl.value && p.country) countryEl.value = p.country;
+
+      const count = p.companies?.length || 0;
+      showEnrichStatus(
+        `✅ Found your profile! We pre-filled ${count} company${count !== 1 ? ' blocks' : ''} on the next page.`,
+        '#4caf50'
+      );
+    } catch (e) {
+      showEnrichStatus('⚠️ Enrichment unavailable — fill in manually.', '#8892a4');
+    }
+  }
+
+  // Trigger enrichment on blur or after 1.5s of no typing
+  document.getElementById('linkedinInput').addEventListener('blur', e => {
+    clearTimeout(enrichTimer);
+    enrichLinkedIn(e.target.value.trim());
+  });
+  document.getElementById('linkedinInput').addEventListener('input', e => {
+    clearTimeout(enrichTimer);
+    hideEnrichStatus();
+    enrichedData = null;
+    if (e.target.value.includes('linkedin.com/in/')) {
+      enrichTimer = setTimeout(() => enrichLinkedIn(e.target.value.trim()), 1500);
+    }
+  });
+
+  // Apply enriched company data when Step 2 loads
+  const _origShowStep = showStep;
+  showStep = function(n) {
+    _origShowStep(n);
+    if (n === 2 && enrichedData?.companies?.length > 0) {
+      applyEnrichedCompanies(enrichedData.companies);
+      enrichedData = null; // only apply once
+    }
+  };
+
+  function applyEnrichedCompanies(companies) {
+    // Clear existing company blocks
+    const container = document.getElementById('companiesContainer');
+    container.innerHTML = '';
+    companyCount = 0;
+
+    // Build blocks from enriched data
+    companies.forEach((co, idx) => {
+      addCompany(idx === 0);
+      const block = container.querySelectorAll('.company-block')[idx];
+      if (!block) return;
+      const prefix = `co_${companyCount}`;
+      const set = (name, val) => {
+        const el = block.querySelector(`[name="${prefix}_${name}"]`);
+        if (el && val) el.value = val;
+      };
+      set('name', co.name);
+      set('title', co.title);
+      set('website', co.website);
+    });
+
+    // Show a banner
+    const banner = document.createElement('div');
+    banner.style.cssText = 'background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#4caf50;';
+    banner.innerHTML = `✅ Pre-filled ${companies.length} company block${companies.length !== 1 ? 's' : ''} from your LinkedIn. Review and edit as needed.`;
+    container.parentNode.insertBefore(banner, container);
+    setTimeout(() => banner.remove(), 6000);
+  }
 
   // ── Submit ──
   document.getElementById('intakeForm').addEventListener('submit', async function(e) {
