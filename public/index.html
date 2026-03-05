@@ -8,50 +8,90 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d0d0d; color: #e8eaf0; min-height: 100vh; padding: 40px 20px 80px; }
     .container { max-width: 640px; margin: 0 auto; }
-    .header { text-align: center; margin-bottom: 48px; }
+
+    /* ── Header ── */
+    .header { text-align: center; margin-bottom: 36px; }
     .logo { width: 72px; height: 72px; margin: 0 auto 20px; display: block; border-radius: 10px; }
     .badge { display: inline-block; background: rgba(233,75,43,0.15); color: #E94B2B; border: 1px solid rgba(233,75,43,0.35); border-radius: 20px; padding: 6px 16px; font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px; }
     h1 { font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 14px; color: #fff; }
     h1 span { color: #E94B2B; }
     .subtitle { font-size: 16px; color: #8892a4; line-height: 1.6; max-width: 500px; margin: 0 auto; }
-    .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 16px; padding: 32px; margin-bottom: 24px; }
+
+    /* ── Progress Bar ── */
+    .progress-wrap { margin-bottom: 32px; }
+    .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .progress-step-label { font-size: 13px; font-weight: 600; color: #E94B2B; letter-spacing: 0.5px; }
+    .progress-pct { font-size: 13px; color: #4a5a76; }
+    .progress-bar-bg { background: #1a1a1a; border-radius: 99px; height: 6px; overflow: hidden; border: 1px solid #2a2a2a; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #E94B2B, #ff7b5c); border-radius: 99px; transition: width 0.4s ease; }
+    .step-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+    .step-dot { width: 8px; height: 8px; border-radius: 50%; background: #2a2a2a; transition: background 0.3s; }
+    .step-dot.active { background: #E94B2B; }
+    .step-dot.done { background: #5a2a20; }
+
+    /* ── Cards ── */
+    .card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 16px; padding: 32px; margin-bottom: 20px; }
     .company-block { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 16px; padding: 32px; margin-bottom: 16px; position: relative; }
     .company-block.additional { border-color: rgba(233,75,43,0.3); }
-    .card-title { font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #E94B2B; margin-bottom: 24px; }
+    .card-title { font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #E94B2B; margin-bottom: 6px; }
+    .card-desc { font-size: 14px; color: #5a6a84; margin-bottom: 24px; line-height: 1.5; }
     .block-label { font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #E94B2B; margin-bottom: 24px; }
     .remove-btn { position: absolute; top: 20px; right: 20px; background: rgba(233,75,43,0.1); border: 1px solid rgba(233,75,43,0.3); color: #E94B2B; border-radius: 8px; padding: 4px 10px; font-size: 13px; cursor: pointer; }
     .remove-btn:hover { background: rgba(233,75,43,0.25); }
-    .add-btn { width: 100%; background: transparent; border: 1px dashed rgba(233,75,43,0.4); color: #E94B2B; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 500; cursor: pointer; margin-bottom: 24px; }
+    .add-btn { width: 100%; background: transparent; border: 1px dashed rgba(233,75,43,0.4); color: #E94B2B; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 500; cursor: pointer; margin-bottom: 20px; }
     .add-btn:hover { background: rgba(233,75,43,0.07); border-color: rgba(233,75,43,0.7); }
+
+    /* ── Fields ── */
     .field { margin-bottom: 20px; }
     label { display: block; font-size: 14px; font-weight: 500; color: #c4cad6; margin-bottom: 8px; }
     label .required { color: #ff6b6b; margin-left: 3px; }
     input[type="text"], input[type="email"], input[type="url"], input[type="tel"], select, textarea { width: 100%; background: #111; border: 1px solid #2a2a2a; border-radius: 10px; padding: 12px 16px; font-size: 15px; color: #e8eaf0; outline: none; transition: border-color 0.2s; font-family: inherit; }
     input::placeholder, textarea::placeholder { color: #444; }
     input:focus, select:focus, textarea:focus { border-color: #E94B2B; }
+    input.error, select.error, textarea.error { border-color: #ff6b6b !important; }
+    .field-error { font-size: 12px; color: #ff6b6b; margin-top: 5px; display: none; }
     select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23E94B2B' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
     select option { background: #111827; }
     textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 500px) { .two-col { grid-template-columns: 1fr; } }
     .hint { font-size: 12px; color: #4a5a76; margin-top: 6px; line-height: 1.5; }
+
+    /* ── Toggle ── */
     .toggle-field { margin-bottom: 20px; }
     .toggle-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
     .toggle-label { font-size: 14px; font-weight: 500; color: #c4cad6; }
     .toggle-options { display: flex; gap: 10px; }
-    .toggle-opt { padding: 8px 18px; border-radius: 8px; border: 1px solid #2a2a2a; background: #111; color: #666; font-size: 14px; cursor: pointer; }
+    .toggle-opt { padding: 8px 18px; border-radius: 8px; border: 1px solid #2a2a2a; background: #111; color: #666; font-size: 14px; cursor: pointer; transition: all 0.2s; }
     .toggle-opt.active { background: rgba(233,75,43,0.15); border-color: #E94B2B; color: #E94B2B; font-weight: 600; }
     .investor-fields { display: none; margin-top: 20px; }
     .investor-fields.visible { display: block; }
+
+    /* ── Checkboxes ── */
     .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
     .checkbox-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
     .checkbox-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #E94B2B; cursor: pointer; flex-shrink: 0; }
     .checkbox-item span { font-size: 14px; color: #c4cad6; }
     .section-divider { border: none; border-top: 1px solid #2a2a2a; margin: 24px 0; }
-    .submit-btn { width: 100%; background: linear-gradient(135deg, #E94B2B, #c73d22); color: #fff; border: none; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 600; cursor: pointer; }
+
+    /* ── Navigation Buttons ── */
+    .nav-row { display: flex; gap: 12px; margin-top: 8px; }
+    .btn-back { flex: 1; background: transparent; border: 1px solid #2a2a2a; color: #8892a4; border-radius: 12px; padding: 15px; font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .btn-back:hover { border-color: #4a5a76; color: #c4cad6; }
+    .btn-next { flex: 2; background: linear-gradient(135deg, #E94B2B, #c73d22); color: #fff; border: none; border-radius: 12px; padding: 15px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity 0.2s, transform 0.15s; }
+    .btn-next:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-next:only-child { flex: 1; }
+    .submit-btn { width: 100%; background: linear-gradient(135deg, #E94B2B, #c73d22); color: #fff; border: none; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 8px; transition: opacity 0.2s, transform 0.15s; }
     .submit-btn:hover { opacity: 0.92; transform: translateY(-1px); }
-    .footer-note { text-align: center; font-size: 13px; color: #3d4f6b; margin-top: 20px; line-height: 1.6; }
-    .success { display: none; text-align: center; padding: 60px 32px; background: #111827; border: 1px solid #1f2d45; border-radius: 16px; }
+    .footer-note { text-align: center; font-size: 13px; color: #3d4f6b; margin-top: 16px; line-height: 1.6; }
+
+    /* ── Steps ── */
+    .step { display: none; }
+    .step.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── Success ── */
+    .success { display: none; text-align: center; padding: 60px 32px; background: #111827; border: 1px solid #1f2d45; border-radius: 16px; animation: fadeIn 0.3s ease; }
     .success-icon { font-size: 48px; margin-bottom: 20px; }
     .success h2 { font-size: 24px; color: #fff; margin-bottom: 12px; }
     .success p { color: #8892a4; line-height: 1.6; }
@@ -59,80 +99,292 @@
 </head>
 <body>
 <div class="container">
+
+  <!-- Header -->
   <div class="header">
     <img src="blpn-logo.jpg" alt="BLPN Logo" class="logo" />
     <div class="badge">⚾ Beta — First Wave</div>
     <h1>Step into the <span>Bullpen</span>.</h1>
-    <p class="subtitle">We're building a smarter way to connect inside BLPN. Tell us who you are and what you're working on — we'll handle the rest.</p>
+    <p class="subtitle">We're building a smarter way to connect inside BLPN. Tell us who you are — we'll handle the rest.</p>
   </div>
 
-  <form id="intakeForm">
-    <div class="card">
-      <div class="card-title">01 — Who You Are</div>
-      <div class="two-col">
-        <div class="field"><label>First Name <span class="required">*</span></label><input type="text" name="first_name" placeholder="Matt" required /></div>
-        <div class="field"><label>Last Name <span class="required">*</span></label><input type="text" name="last_name" placeholder="Kramer" required /></div>
-      </div>
-      <div class="field"><label>Email Address <span class="required">*</span></label><input type="email" name="email" placeholder="you@company.com" required /></div>
-      <div class="field"><label>Phone Number</label><input type="tel" name="phone" placeholder="+1 (555) 000-0000" /></div>
-      <div class="field"><label>LinkedIn Profile URL <span class="required">*</span></label><input type="url" name="linkedin" placeholder="https://linkedin.com/in/yourname" required /><p class="hint">We'll use this to pre-fill your profile — saves you time.</p></div>
-      <div class="two-col">
-        <div class="field"><label>City</label><input type="text" name="city" placeholder="Boston" /></div>
-        <div class="field"><label>State / Province</label><input type="text" name="state" placeholder="MA" /></div>
-      </div>
-      <div class="field"><label>Country</label><input type="text" name="country" placeholder="United States" /></div>
-      <div class="field"><label>How would you describe yourself?</label><select name="member_role"><option value="" disabled selected>Select one...</option><option>Founder / Co-founder</option><option>Operator / Executive</option><option>Investor (Angel / VC)</option><option>Advisor / KOL</option><option>BD / Partnerships</option><option>Clinical / Research</option><option>Service Provider</option><option>Other</option></select></div>
+  <!-- Progress Bar -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-meta">
+      <span class="progress-step-label" id="stepLabel">Step 1 of 4</span>
+      <span class="progress-pct" id="stepPct">0% complete</span>
     </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+    <div class="step-dots" id="stepDots"></div>
+  </div>
 
-    <div id="companiesContainer"></div>
-    <button type="button" class="add-btn" id="addCompanyBtn">+ Add Another Company / Role</button>
+  <!-- Form -->
+  <form id="intakeForm" novalidate>
 
-    <div class="card">
-      <div class="card-title">03 — Capital Deployment</div>
-      <div class="toggle-field">
-        <div class="toggle-row"><span class="toggle-label">Are you actively deploying capital?</span><div class="toggle-options"><div class="toggle-opt" data-val="Yes" onclick="toggleInvestor(this)">Yes</div><div class="toggle-opt" data-val="No" onclick="toggleInvestor(this)">No</div></div></div>
-        <input type="hidden" name="deploying_capital" id="deployingCapitalInput" value="" />
-      </div>
-      <div class="investor-fields" id="investorFields">
-        <div class="field"><label>Investment Mandate</label><textarea name="investment_mandate" placeholder="Describe your thesis — e.g. 'Early-stage biotech, Series A, focus on oncology and rare disease'" style="min-height:80px;"></textarea></div>
+    <!-- ══ STEP 1: Who You Are ══ -->
+    <div class="step active" data-step="1">
+      <div class="card">
+        <div class="card-title">01 — Who You Are</div>
+        <div class="card-desc">Let's start with the basics. This takes about 60 seconds.</div>
         <div class="two-col">
-          <div class="field"><label>Typical Check Size</label><select name="check_size"><option value="" disabled selected>Select one...</option><option>Under $100K</option><option>$100K – $500K</option><option>$500K – $1M</option><option>$1M – $5M</option><option>$5M – $15M</option><option>$15M – $50M</option><option>$50M+</option></select></div>
-          <div class="field"><label>Preferred Stage</label><select name="preferred_stage"><option value="" disabled selected>Select one...</option><option>Pre-seed</option><option>Seed</option><option>Series A</option><option>Series B</option><option>Series B+</option><option>Growth / Late Stage</option><option>All stages</option></select></div>
+          <div class="field">
+            <label>First Name <span class="required">*</span></label>
+            <input type="text" name="first_name" placeholder="Matt" required />
+            <div class="field-error">Please enter your first name.</div>
+          </div>
+          <div class="field">
+            <label>Last Name <span class="required">*</span></label>
+            <input type="text" name="last_name" placeholder="Kramer" required />
+            <div class="field-error">Please enter your last name.</div>
+          </div>
         </div>
-        <div class="field"><label>Preferred Verticals</label><div class="checkbox-group" id="invVerticals"></div></div>
-        <div class="field"><label>Anything else about your investing criteria?</label><textarea name="investor_notes" placeholder="Geography, co-invest appetite, lead vs follow, etc." style="min-height:70px;"></textarea></div>
+        <div class="field">
+          <label>Email Address <span class="required">*</span></label>
+          <input type="email" name="email" placeholder="you@company.com" required />
+          <div class="field-error">Please enter a valid email address.</div>
+        </div>
+        <div class="field">
+          <label>Phone Number</label>
+          <input type="tel" name="phone" placeholder="+1 (555) 000-0000" />
+        </div>
+        <div class="field">
+          <label>LinkedIn Profile URL <span class="required">*</span></label>
+          <input type="url" name="linkedin" placeholder="https://linkedin.com/in/yourname" required />
+          <p class="hint">We'll use this to pre-fill your profile — saves you time.</p>
+          <div class="field-error">Please enter your LinkedIn URL.</div>
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label>City</label>
+            <input type="text" name="city" placeholder="Boston" />
+          </div>
+          <div class="field">
+            <label>State / Province</label>
+            <input type="text" name="state" placeholder="MA" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Country</label>
+          <input type="text" name="country" placeholder="United States" />
+        </div>
+        <div class="field">
+          <label>How would you describe yourself?</label>
+          <select name="member_role">
+            <option value="" disabled selected>Select one...</option>
+            <option>Founder / Co-founder</option>
+            <option>Operator / Executive</option>
+            <option>Investor (Angel / VC)</option>
+            <option>Advisor / KOL</option>
+            <option>BD / Partnerships</option>
+            <option>Clinical / Research</option>
+            <option>Service Provider</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="nav-row">
+        <button type="button" class="btn-next" onclick="nextStep()">Continue → Your Company</button>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">04 — What You Can Offer</div>
-      <div class="field"><label>What can you genuinely offer other BLPN members? <span class="required">*</span></label><textarea name="can_offer" placeholder="Be specific..." required></textarea><p class="hint">The more specific you are, the better your matches will be.</p></div>
-      <div class="field"><label>What types of connections can you make for others?</label><div class="checkbox-group" id="offerTypes"></div></div>
+    <!-- ══ STEP 2: Company / Companies ══ -->
+    <div class="step" data-step="2">
+      <div id="companiesContainer"></div>
+      <button type="button" class="add-btn" id="addCompanyBtn">+ Add Another Company / Role</button>
+
+      <div class="card">
+        <div class="card-title">03 — Capital Deployment</div>
+        <div class="card-desc">Skip this if you're not actively investing.</div>
+        <div class="toggle-field">
+          <div class="toggle-row">
+            <span class="toggle-label">Are you actively deploying capital?</span>
+            <div class="toggle-options">
+              <div class="toggle-opt" data-val="Yes" onclick="toggleInvestor(this)">Yes</div>
+              <div class="toggle-opt" data-val="No" onclick="toggleInvestor(this)">No</div>
+            </div>
+          </div>
+          <input type="hidden" name="deploying_capital" id="deployingCapitalInput" value="" />
+        </div>
+        <div class="investor-fields" id="investorFields">
+          <div class="field">
+            <label>Investment Mandate</label>
+            <textarea name="investment_mandate" placeholder="Describe your thesis — e.g. 'Early-stage biotech, Series A, focus on oncology and rare disease'" style="min-height:80px;"></textarea>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label>Typical Check Size</label>
+              <select name="check_size">
+                <option value="" disabled selected>Select one...</option>
+                <option>Under $100K</option><option>$100K – $500K</option><option>$500K – $1M</option>
+                <option>$1M – $5M</option><option>$5M – $15M</option><option>$15M – $50M</option><option>$50M+</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Preferred Stage</label>
+              <select name="preferred_stage">
+                <option value="" disabled selected>Select one...</option>
+                <option>Pre-seed</option><option>Seed</option><option>Series A</option>
+                <option>Series B</option><option>Series B+</option><option>Growth / Late Stage</option><option>All stages</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Preferred Verticals</label>
+            <div class="checkbox-group" id="invVerticals"></div>
+          </div>
+          <div class="field">
+            <label>Anything else about your investing criteria?</label>
+            <textarea name="investor_notes" placeholder="Geography, co-invest appetite, lead vs follow, etc." style="min-height:70px;"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn-next" onclick="nextStep()">Continue → What You Offer</button>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">05 — What You're Looking For</div>
-      <div class="field"><label>What do you actually need in the next 6–12 months? <span class="required">*</span></label><textarea name="looking_for" placeholder="Be direct..." required></textarea><p class="hint">This is what drives your matches. Don't be shy — specificity wins.</p></div>
-      <div class="field"><label>What types of connections are you actively seeking?</label><div class="checkbox-group" id="seekingTypes"></div></div>
-      <div class="field"><label>Anything else we should know before your first match?</label><textarea name="additional_notes" placeholder="Hard nos, constraints, upcoming events, or context..." style="min-height: 80px;"></textarea></div>
+    <!-- ══ STEP 3: What You Offer & Seek ══ -->
+    <div class="step" data-step="3">
+      <div class="card">
+        <div class="card-title">04 — What You Can Offer</div>
+        <div class="card-desc">This is the most important section — the more specific you are, the better your matches.</div>
+        <div class="field">
+          <label>What can you genuinely offer other BLPN members? <span class="required">*</span></label>
+          <textarea name="can_offer" placeholder="Be specific — intros to VCs in oncology, access to clinical sites in the Midwest, operational experience scaling diagnostics companies..." required></textarea>
+          <p class="hint">Specificity wins. Vague answers lead to vague matches.</p>
+          <div class="field-error">Please describe what you can offer.</div>
+        </div>
+        <div class="field">
+          <label>What types of connections can you make for others?</label>
+          <div class="checkbox-group" id="offerTypes"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">05 — What You're Looking For</div>
+        <div class="card-desc">Be direct. This is what drives your matches.</div>
+        <div class="field">
+          <label>What do you actually need in the next 6–12 months? <span class="required">*</span></label>
+          <textarea name="looking_for" placeholder="Be direct — Series A lead, clinical investigator in Boston, co-founder with regulatory background..." required></textarea>
+          <p class="hint">Don't be shy. Everyone here is looking for something.</p>
+          <div class="field-error">Please describe what you're looking for.</div>
+        </div>
+        <div class="field">
+          <label>What types of connections are you actively seeking?</label>
+          <div class="checkbox-group" id="seekingTypes"></div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn-next" onclick="nextStep()">Continue → Final Step</button>
+      </div>
     </div>
 
-    <button type="submit" class="submit-btn">Submit &amp; Join the First Wave →</button>
-    <p class="footer-note">This takes 2–3 minutes. We'll reach out before Miami to confirm your first curated intros.<br/>Your info stays within BLPN — no spam, no marketplaces.</p>
+    <!-- ══ STEP 4: Final Details ══ -->
+    <div class="step" data-step="4">
+      <div class="card">
+        <div class="card-title">06 — Final Details</div>
+        <div class="card-desc">Almost done. Any context that doesn't fit elsewhere.</div>
+        <div class="field">
+          <label>Anything else we should know before your first match?</label>
+          <textarea name="additional_notes" placeholder="Hard nos, constraints, upcoming events, timing, or anything else..." style="min-height: 100px;"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit &amp; Join the First Wave →</button>
+      <p class="footer-note">
+        Your info stays within BLPN — no spam, no marketplaces.<br/>
+        We'll reach out before Miami to confirm your first curated intros.
+      </p>
+
+      <div class="nav-row" style="margin-top: 16px;">
+        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+      </div>
+    </div>
+
   </form>
 
+  <!-- Success -->
   <div class="success" id="successMsg">
     <div class="success-icon">⚾</div>
     <h2>You're in the bullpen.</h2>
     <p>We've got your profile. Expect to hear from us with your enriched profile to validate in the near future.</p>
   </div>
+
 </div>
 
 <script>
+  // ── Data ──
   const VERTICALS = ['Drugs / Biotech / Therapeutics','Diagnostics','Digital Health','Medical Devices','Neurotechnology','Longevity / Regenerative Medicine','Deep Tech / Synthetic Biology','Tools & Platforms','AI / Data Science in Healthcare','Manufacturing & Scale-up','Services','Agriculture / FoodTech / Cellular Agriculture','Critical Minerals / Advanced Materials','Aerospace / Space Biotech','Energy / Climate / Planetary Health','Computational Biology / Bioinformatics','Behavioral / Mental Health','Veterinary / Animal Health','SaaS / Infrastructure','Other (Specify)'];
   const OFFERS = ['Investor introductions','Clinical / trial site access','BD / partnership opportunities','KOL / advisor connections','Regulatory / legal expertise','Talent / hiring connections','Customer / commercial intros','Operational / scaling experience'];
   const SEEKING = ['Capital / investment','Clinical trial sites / investigators','Strategic BD partners','KOLs / advisors','Co-founder / key hire','Regulatory / reimbursement guidance','Customer / commercial traction','Peer founders (same stage)'];
 
+  const STEPS = 4;
+  let currentStep = 1;
+
+  // ── Step labels ──
+  const STEP_NAMES = ['Who You Are', 'Your Company', 'What You Offer', 'Final Details'];
+
+  // ── Progress ──
+  function renderDots() {
+    const wrap = document.getElementById('stepDots');
+    wrap.innerHTML = '';
+    for (let i = 1; i <= STEPS; i++) {
+      const d = document.createElement('div');
+      d.className = 'step-dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+      wrap.appendChild(d);
+    }
+  }
+
+  function updateProgress() {
+    const pct = Math.round(((currentStep - 1) / STEPS) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('stepLabel').textContent = `Step ${currentStep} of ${STEPS} — ${STEP_NAMES[currentStep - 1]}`;
+    document.getElementById('stepPct').textContent = pct + '% complete';
+    renderDots();
+  }
+
+  // ── Validation ──
+  function validateStep(stepNum) {
+    const stepEl = document.querySelector(`.step[data-step="${stepNum}"]`);
+    const required = stepEl.querySelectorAll('[required]');
+    let valid = true;
+
+    required.forEach(el => {
+      const errEl = el.parentElement.querySelector('.field-error');
+      const isEmpty = !el.value.trim();
+      el.classList.toggle('error', isEmpty);
+      if (errEl) errEl.style.display = isEmpty ? 'block' : 'none';
+      if (isEmpty) valid = false;
+    });
+
+    return valid;
+  }
+
+  // ── Navigation ──
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+    currentStep = n;
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextStep() {
+    if (!validateStep(currentStep)) return;
+    if (currentStep < STEPS) showStep(currentStep + 1);
+  }
+
+  function prevStep() {
+    if (currentStep > 1) showStep(currentStep - 1);
+  }
+
+  // ── Company blocks ──
   function verticalOpts() { return VERTICALS.map(v => `<option>${v}</option>`).join(''); }
   function offerChks(prefix) { return OFFERS.map(t => `<label class="checkbox-item"><input type="checkbox" name="${prefix}_offer_type" value="${t}" /><span>${t}</span></label>`).join(''); }
   function seekChks(prefix) { return SEEKING.map(t => `<label class="checkbox-item"><input type="checkbox" name="${prefix}_seeking_type" value="${t}" /><span>${t}</span></label>`).join(''); }
@@ -144,8 +396,9 @@
     const label = isFirst ? '02 — Primary Company' : `Additional Company ${idx}`;
     const rmBtn = isFirst ? '' : `<button type="button" class="remove-btn" onclick="removeBlock(this)">✕ Remove</button>`;
     const extraClass = isFirst ? '' : ' additional';
-    return `<div class="company-block${extraClass}" data-idx="${idx}">${rmBtn}<div class="block-label">${label}</div>
-<div class="field"><label>Company / Organization ${isFirst ? '<span class="required">*</span>' : ''}</label><input type="text" name="${prefix}_name" placeholder="Acme Therapeutics" ${isFirst ? 'required' : ''} /></div>
+    return `<div class="company-block${extraClass}" data-idx="${idx}">${rmBtn}
+<div class="block-label">${label}</div>
+<div class="field"><label>Company / Organization ${isFirst ? '<span class="required">*</span>' : ''}</label><input type="text" name="${prefix}_name" placeholder="Acme Therapeutics" ${isFirst ? 'required' : ''} />${isFirst ? '<div class="field-error">Please enter your company name.</div>' : ''}</div>
 <div class="field"><label>Company Website</label><input type="url" name="${prefix}_website" placeholder="https://yourcompany.com" /></div>
 <div class="field"><label>Your Role / Title</label><input type="text" name="${prefix}_title" placeholder="Founder & CEO" /></div>
 <div class="field"><label>Vertical</label><select name="${prefix}_vertical"><option value="" disabled selected>Select one...</option>${verticalOpts()}</select></div>
@@ -157,31 +410,57 @@
 <div class="field"><label>Connections you can make</label><div class="checkbox-group">${offerChks(prefix)}</div></div>
 <hr class="section-divider" />
 <div class="field"><label>What are you looking for through this role?</label><textarea name="${prefix}_looking_for" placeholder="What do you need for this company?" style="min-height:70px;"></textarea></div>
-<div class="field"><label>Types of connections you're seeking</label><div class="checkbox-group">${seekChks(prefix)}</div></div></div>`;
+<div class="field"><label>Types of connections you're seeking</label><div class="checkbox-group">${seekChks(prefix)}</div></div>
+</div>`;
   }
 
-  function addCompany(isFirst = false) { companyCount++; const c = document.getElementById('companiesContainer'); const d = document.createElement('div'); d.innerHTML = buildCompanyBlock(companyCount, isFirst); c.appendChild(d.firstElementChild); }
+  function addCompany(isFirst = false) {
+    companyCount++;
+    const c = document.getElementById('companiesContainer');
+    const d = document.createElement('div');
+    d.innerHTML = buildCompanyBlock(companyCount, isFirst);
+    c.appendChild(d.firstElementChild);
+  }
+
   function removeBlock(btn) { btn.closest('.company-block').remove(); }
 
-  document.getElementById('addCompanyBtn').addEventListener('click', () => addCompany(false));
+  // ── Investor toggle ──
+  function toggleInvestor(el) {
+    document.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('deployingCapitalInput').value = el.dataset.val;
+    document.getElementById('investorFields').classList.toggle('visible', el.dataset.val === 'Yes');
+  }
+
+  // ── Init checkboxes ──
   document.getElementById('offerTypes').innerHTML = OFFERS.map(t => `<label class="checkbox-item"><input type="checkbox" name="offer_type" value="${t}" /><span>${t}</span></label>`).join('');
   document.getElementById('seekingTypes').innerHTML = SEEKING.map(t => `<label class="checkbox-item"><input type="checkbox" name="seeking_type" value="${t}" /><span>${t}</span></label>`).join('');
-  document.getElementById('invVerticals').innerHTML = VERTICALS.slice(0, -1).map(v => `<label class="checkbox-item"><input type="checkbox" name="inv_vertical" value="${v}" /><span>${v}</span></label>`).join('') + `<label class="checkbox-item"><input type="checkbox" name="inv_vertical" value="Other / All" /><span>Other / All</span></label>`;
+  document.getElementById('invVerticals').innerHTML = VERTICALS.map(v => `<label class="checkbox-item"><input type="checkbox" name="inv_vertical" value="${v}" /><span>${v}</span></label>`).join('');
 
-  function toggleInvestor(el) { document.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active')); el.classList.add('active'); document.getElementById('deployingCapitalInput').value = el.dataset.val; document.getElementById('investorFields').classList.toggle('visible', el.dataset.val === 'Yes'); }
+  // ── Init first company block & progress ──
   addCompany(true);
+  document.getElementById('addCompanyBtn').addEventListener('click', () => addCompany(false));
+  updateProgress();
 
+  // ── Submit ──
   document.getElementById('intakeForm').addEventListener('submit', async function(e) {
     e.preventDefault();
+    if (!validateStep(4)) return;
+
     const btn = document.querySelector('.submit-btn');
     btn.textContent = 'Submitting...';
     btn.disabled = true;
+
     const form = e.target;
     const data = new FormData(form);
     const payload = {};
     for (let [key, val] of data.entries()) {
-      if (payload[key]) { if (!Array.isArray(payload[key])) payload[key] = [payload[key]]; payload[key].push(val); }
-      else { payload[key] = val; }
+      if (payload[key]) {
+        if (!Array.isArray(payload[key])) payload[key] = [payload[key]];
+        payload[key].push(val);
+      } else {
+        payload[key] = val;
+      }
     }
 
     const companies = [];
@@ -197,9 +476,9 @@
         raise: payload[`${prefix}_raise`] || '',
         description: payload[`${prefix}_description`] || '',
         can_offer: payload[`${prefix}_can_offer`] || '',
-        offer_types: Array.isArray(payload[`${prefix}_offer_type`]) ? payload[`${prefix}_offer_type`].join(', ') : '',
+        offer_types: Array.isArray(payload[`${prefix}_offer_type`]) ? payload[`${prefix}_offer_type`].join(', ') : (payload[`${prefix}_offer_type`] || ''),
         looking_for: payload[`${prefix}_looking_for`] || '',
-        seeking_types: Array.isArray(payload[`${prefix}_seeking_type`]) ? payload[`${prefix}_seeking_type`].join(', ') : ''
+        seeking_types: Array.isArray(payload[`${prefix}_seeking_type`]) ? payload[`${prefix}_seeking_type`].join(', ') : (payload[`${prefix}_seeking_type`] || '')
       });
     });
 
@@ -218,12 +497,12 @@
       "Investment Mandate": payload.investment_mandate || '',
       "Check Size": payload.check_size || '',
       "Preferred Stage": payload.preferred_stage || '',
-      "Preferred Verticals": Array.isArray(payload.inv_vertical) ? payload.inv_vertical.join(', ') : '',
+      "Preferred Verticals": Array.isArray(payload.inv_vertical) ? payload.inv_vertical.join(', ') : (payload.inv_vertical || ''),
       "Investor Notes": payload.investor_notes || '',
       "What You Can Offer": payload.can_offer || '',
-      "Offer Types": Array.isArray(payload.offer_type) ? payload.offer_type.join(', ') : '',
+      "Offer Types": Array.isArray(payload.offer_type) ? payload.offer_type.join(', ') : (payload.offer_type || ''),
       "Looking For": payload.looking_for || '',
-      "Seeking Types": Array.isArray(payload.seeking_type) ? payload.seeking_type.join(', ') : '',
+      "Seeking Types": Array.isArray(payload.seeking_type) ? payload.seeking_type.join(', ') : (payload.seeking_type || ''),
       "Additional Notes": payload.additional_notes || '',
       "Submitted At": new Date().toISOString()
     };
@@ -238,8 +517,13 @@
         },
         body: JSON.stringify(fields)
       });
-      if (res.ok) { form.style.display = 'none'; document.getElementById('successMsg').style.display = 'block'; }
-      else { throw new Error(JSON.stringify(await res.json())); }
+      if (res.ok) {
+        document.getElementById('progressWrap').style.display = 'none';
+        form.style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      } else {
+        throw new Error(JSON.stringify(await res.json()));
+      }
     } catch (err) {
       console.error('Submission error:', err);
       btn.textContent = 'Something went wrong — try again';
