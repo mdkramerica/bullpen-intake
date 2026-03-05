@@ -1,0 +1,7 @@
+node_modules
+.env
+.env.local
+supabase/
+server.js
+package.json
+package-lock.json
