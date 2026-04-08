@@ -322,8 +322,8 @@
 <script>
   // ── Data ──
   const VERTICALS = ['Drugs / Biotech / Therapeutics','Diagnostics','Digital Health','Medical Devices','Neurotechnology','Longevity / Regenerative Medicine','Deep Tech / Synthetic Biology','Tools & Platforms','AI / Data Science in Healthcare','Manufacturing & Scale-up','Services','Agriculture / FoodTech / Cellular Agriculture','Critical Minerals / Advanced Materials','Aerospace / Space Biotech','Energy / Climate / Planetary Health','Computational Biology / Bioinformatics','Behavioral / Mental Health','Veterinary / Animal Health','SaaS / Infrastructure','Other (Specify)'];
-  const OFFERS = ['Investor introductions','Clinical / trial site access','BD / partnership opportunities','KOL / advisor connections','Regulatory / legal expertise','Talent / hiring connections','Customer / commercial intros','Operational / scaling experience'];
-  const SEEKING = ['Capital / investment','Clinical trial sites / investigators','Strategic BD partners','KOLs / advisors','Co-founder / key hire','Regulatory / reimbursement guidance','Customer / commercial traction','Peer founders (same stage)'];
+  const OFFERS = ['Investor introductions','Clinical / trial site access','BD / partnership opportunities','KOL / advisor connections','Regulatory / legal expertise','Talent / hiring connections','Customer / commercial intros','Operational / scaling experience','Other'];
+  const SEEKING = ['Capital / investment','Clinical trial sites / investigators','Strategic BD partners','KOLs / advisors','Co-founder / key hire','Regulatory / reimbursement guidance','Customer / commercial traction','Peer founders (same stage)','Other'];
 
   const STEPS = 4;
   let currentStep = 1;
@@ -387,8 +387,23 @@
 
   // ── Company blocks ──
   function verticalOpts() { return VERTICALS.map(v => `<option>${v}</option>`).join(''); }
-  function offerChks(prefix) { return OFFERS.map(t => `<label class="checkbox-item"><input type="checkbox" name="${prefix}_offer_type" value="${t}" /><span>${t}</span></label>`).join(''); }
-  function seekChks(prefix) { return SEEKING.map(t => `<label class="checkbox-item"><input type="checkbox" name="${prefix}_seeking_type" value="${t}" /><span>${t}</span></label>`).join(''); }
+  function otherInput(id) {
+    return `<input type="text" id="${id}" name="${id}" placeholder="Please specify..." style="display:none;margin-top:6px;margin-left:28px;width:calc(100% - 28px);" />`;
+  }
+  function chkItem(name, value) {
+    const isOther = value === 'Other' || value === 'Other (Specify)';
+    const inputId = isOther ? `${name}_other_text` : '';
+    const cb = `<input type="checkbox" name="${name}" value="${value}" ${isOther ? `onchange="toggleOther(this,'${inputId}')"` : ''} />`;
+    return `<label class="checkbox-item">${cb}<span>${value}</span></label>${isOther ? otherInput(inputId) : ''}`;
+  }
+  function offerChks(prefix) { return OFFERS.map(t => chkItem(`${prefix}_offer_type`, t)).join(''); }
+  function seekChks(prefix) { return SEEKING.map(t => chkItem(`${prefix}_seeking_type`, t)).join(''); }
+  function toggleOther(cb, inputId) {
+    const inp = document.getElementById(inputId);
+    if (!inp) return;
+    inp.style.display = cb.checked ? 'block' : 'none';
+    if (!cb.checked) inp.value = '';
+  }
 
   let companyCount = 0;
 
@@ -434,9 +449,9 @@
   }
 
   // ── Init checkboxes ──
-  document.getElementById('offerTypes').innerHTML = OFFERS.map(t => `<label class="checkbox-item"><input type="checkbox" name="offer_type" value="${t}" /><span>${t}</span></label>`).join('');
-  document.getElementById('seekingTypes').innerHTML = SEEKING.map(t => `<label class="checkbox-item"><input type="checkbox" name="seeking_type" value="${t}" /><span>${t}</span></label>`).join('');
-  document.getElementById('invVerticals').innerHTML = VERTICALS.map(v => `<label class="checkbox-item"><input type="checkbox" name="inv_vertical" value="${v}" /><span>${v}</span></label>`).join('');
+  document.getElementById('offerTypes').innerHTML = OFFERS.map(t => chkItem('offer_type', t)).join('');
+  document.getElementById('seekingTypes').innerHTML = SEEKING.map(t => chkItem('seeking_type', t)).join('');
+  document.getElementById('invVerticals').innerHTML = VERTICALS.map(v => chkItem('inv_vertical', v)).join('');
 
   // ── Init first company block & progress ──
   addCompany(true);
