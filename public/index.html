@@ -94,20 +94,25 @@
     .success h2 { font-size: 24px; color: #fff; margin-bottom: 12px; }
     .success p { color: #8892a4; line-height: 1.6; }
 
-    /* ── Professional Services Grid ── */
-    .services-grid { border: 1px solid #2a2a2a; border-radius: 10px; overflow: hidden; margin-top: 8px; }
-    .services-header { display: grid; grid-template-columns: 1fr 72px 72px; background: #111; border-bottom: 1px solid #2a2a2a; padding: 10px 16px; font-size: 12px; font-weight: 600; color: #E94B2B; text-transform: uppercase; letter-spacing: 0.5px; }
-    .services-header span:nth-child(2), .services-header span:nth-child(3) { text-align: center; }
-    .services-row { display: grid; grid-template-columns: 1fr 72px 72px; padding: 8px 16px; border-bottom: 1px solid #1a1a1a; align-items: center; transition: background 0.15s; }
-    .services-row:last-child { border-bottom: none; }
-    .services-row:hover { background: rgba(233,75,43,0.03); }
-    .services-row .svc-name { font-size: 13px; color: #c4cad6; }
-    .services-row .svc-check { text-align: center; }
-    .services-row .svc-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: #E94B2B; cursor: pointer; }
+    /* ── Checkbox Grids (services, connections) ── */
+    .cb-grid { border: 1px solid #2a2a2a; border-radius: 10px; overflow: hidden; margin-top: 8px; }
+    .cb-grid-header { display: grid; background: #111; border-bottom: 1px solid #2a2a2a; padding: 10px 16px; font-size: 12px; font-weight: 600; color: #E94B2B; text-transform: uppercase; letter-spacing: 0.5px; }
+    .cb-grid-header span:not(:first-child) { text-align: center; }
+    .cb-grid-row { display: grid; padding: 8px 16px; border-bottom: 1px solid #1a1a1a; align-items: center; transition: background 0.15s; }
+    .cb-grid-row:last-child { border-bottom: none; }
+    .cb-grid-row:hover { background: rgba(233,75,43,0.03); }
+    .cb-grid-row .cb-label { font-size: 13px; color: #c4cad6; }
+    .cb-grid-row .cb-check { text-align: center; }
+    .cb-grid-row .cb-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: #E94B2B; cursor: pointer; }
+    /* 2-col grids (services: seeking + offer) */
+    .cb-grid.cols-2 .cb-grid-header, .cb-grid.cols-2 .cb-grid-row { grid-template-columns: 1fr 72px 72px; }
+    /* 3-col grids (connections: surface + warm + direct) */
+    .cb-grid.cols-3 .cb-grid-header, .cb-grid.cols-3 .cb-grid-row { grid-template-columns: 1fr 64px 64px 64px; }
     @media (max-width: 500px) {
-      .services-header, .services-row { grid-template-columns: 1fr 56px 56px; padding: 8px 10px; }
-      .services-header { font-size: 11px; }
-      .services-row .svc-name { font-size: 12px; }
+      .cb-grid.cols-2 .cb-grid-header, .cb-grid.cols-2 .cb-grid-row { grid-template-columns: 1fr 56px 56px; padding: 8px 10px; }
+      .cb-grid.cols-3 .cb-grid-header, .cb-grid.cols-3 .cb-grid-row { grid-template-columns: 1fr 48px 48px 48px; padding: 8px 10px; }
+      .cb-grid-header { font-size: 10px; }
+      .cb-grid-row .cb-label { font-size: 12px; }
     }
   </style>
 </head>
@@ -231,16 +236,8 @@
         <hr class="section-divider" />
         <div class="field">
           <label>Connections you could offer from your network</label>
-          <div class="checkbox-group" id="connectionsOffer"></div>
-        </div>
-        <div class="field">
-          <label>Connection Strength</label>
-          <select name="connection_strength">
-            <option value="" disabled selected>Select one...</option>
-            <option>Surface-Level Connection</option>
-            <option>Warm / Indirect Connection</option>
-            <option>Direct / Strong Connection</option>
-          </select>
+          <p class="hint" style="margin-bottom:8px;">Check the strength level for each connection type you can offer.</p>
+          <div id="connectionsOffer"></div>
         </div>
         <hr class="section-divider" />
         <div class="field">
@@ -650,14 +647,14 @@
   }
 
   function buildServicesGrid(prefix) {
-    let html = '<div class="services-grid">';
-    html += '<div class="services-header"><span>Service</span><span>Seeking</span><span>Can Offer</span></div>';
+    let html = '<div class="cb-grid cols-2">';
+    html += '<div class="cb-grid-header"><span>Service</span><span>Seeking</span><span>Can Offer</span></div>';
     PROFESSIONAL_SERVICES.forEach(svc => {
       const isOther = svc === 'Other';
-      html += `<div class="services-row">
-        <span class="svc-name">${svc}</span>
-        <span class="svc-check"><input type="checkbox" name="${prefix}_svc_seeking" value="${svc}" ${isOther ? `onchange="toggleSvcOther('${prefix}')"` : ''} /></span>
-        <span class="svc-check"><input type="checkbox" name="${prefix}_svc_offer" value="${svc}" ${isOther ? `onchange="toggleSvcOther('${prefix}')"` : ''} /></span>
+      html += `<div class="cb-grid-row">
+        <span class="cb-label">${svc}</span>
+        <span class="cb-check"><input type="checkbox" name="${prefix}_svc_seeking" value="${svc}" ${isOther ? `onchange="toggleSvcOther('${prefix}')"` : ''} /></span>
+        <span class="cb-check"><input type="checkbox" name="${prefix}_svc_offer" value="${svc}" ${isOther ? `onchange="toggleSvcOther('${prefix}')"` : ''} /></span>
       </div>`;
     });
     html += '</div>';
@@ -674,6 +671,22 @@
     const show = (seekingOther && seekingOther.checked) || (offerOther && offerOther.checked);
     inp.style.display = show ? 'block' : 'none';
     if (!show) inp.value = '';
+  }
+
+  function buildConnectionsGrid(name) {
+    let html = '<div class="cb-grid cols-3">';
+    html += '<div class="cb-grid-header"><span>Connection Type</span><span>Surface</span><span>Warm</span><span>Direct</span></div>';
+    CONNECTION_TYPES.forEach(ct => {
+      const safe = ct.replace(/[^a-zA-Z0-9]/g, '_');
+      html += `<div class="cb-grid-row">
+        <span class="cb-label">${ct}</span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Surface" /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Warm" /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Direct" /></span>
+      </div>`;
+    });
+    html += '</div>';
+    return html;
   }
 
   // ── Company blocks ──
@@ -724,7 +737,7 @@
 
   // ── Init checkboxes (Step 1) ──
   document.getElementById('communityParticipation').innerHTML = COMMUNITY_PARTICIPATION.map(t => chkItem('community_participation', t)).join('');
-  document.getElementById('connectionsOffer').innerHTML = CONNECTION_TYPES.map(t => chkItem('connections_offer', t)).join('');
+  document.getElementById('connectionsOffer').innerHTML = buildConnectionsGrid('connections_offer');
   document.getElementById('connectionsSeeking').innerHTML = CONNECTION_TYPES.map(t => chkItem('connections_seeking', t)).join('');
 
   // ── Init investor verticals (Step 3) ──
@@ -915,7 +928,6 @@
       "Domain Accomplishments": payload.domain_accomplishments || '',
       "Community Participation": collectChecked('community_participation').join(', '),
       "Connections Offer": collectChecked('connections_offer').join(', '),
-      "Connection Strength": payload.connection_strength || '',
       "Connections Seeking": collectChecked('connections_seeking').join(', '),
       "Personal Timeline": payload.personal_timeline || '',
       // Primary company — flat columns
