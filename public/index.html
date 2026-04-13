@@ -677,16 +677,26 @@
     let html = '<div class="cb-grid cols-3">';
     html += '<div class="cb-grid-header"><span>Connection Type</span><span>Surface</span><span>Warm</span><span>Direct</span></div>';
     CONNECTION_TYPES.forEach(ct => {
-      const safe = ct.replace(/[^a-zA-Z0-9]/g, '_');
+      const isOther = ct === 'Other';
+      const extra = isOther ? ` onchange="exclusiveRow(this);toggleConnOther('${name}')"` : ` onchange="exclusiveRow(this)"`;
       html += `<div class="cb-grid-row">
         <span class="cb-label">${ct}</span>
-        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Surface" onchange="exclusiveRow(this)" /></span>
-        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Warm" onchange="exclusiveRow(this)" /></span>
-        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Direct" onchange="exclusiveRow(this)" /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Surface"${extra} /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Warm"${extra} /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Direct"${extra} /></span>
       </div>`;
     });
     html += '</div>';
+    html += `<input type="text" id="${name}_other_text" name="${name}_other" placeholder="Please specify connection type..." style="display:none;margin-top:8px;" />`;
     return html;
+  }
+
+  function toggleConnOther(name) {
+    const inp = document.getElementById(name + '_other_text');
+    if (!inp) return;
+    const anyChecked = document.querySelector(`input[name="${name}"][value^="Other:"]:checked`);
+    inp.style.display = anyChecked ? 'block' : 'none';
+    if (!anyChecked) inp.value = '';
   }
 
   function exclusiveRow(cb) {
