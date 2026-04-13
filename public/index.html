@@ -680,13 +680,21 @@
       const safe = ct.replace(/[^a-zA-Z0-9]/g, '_');
       html += `<div class="cb-grid-row">
         <span class="cb-label">${ct}</span>
-        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Surface" /></span>
-        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Warm" /></span>
-        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Direct" /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Surface" onchange="exclusiveRow(this)" /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Warm" onchange="exclusiveRow(this)" /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Direct" onchange="exclusiveRow(this)" /></span>
       </div>`;
     });
     html += '</div>';
     return html;
+  }
+
+  function exclusiveRow(cb) {
+    if (!cb.checked) return;
+    const row = cb.closest('.cb-grid-row');
+    row.querySelectorAll('input[type="checkbox"]').forEach(other => {
+      if (other !== cb) other.checked = false;
+    });
   }
 
   // ── Company blocks ──
