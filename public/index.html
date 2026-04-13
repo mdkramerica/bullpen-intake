@@ -106,13 +106,37 @@
     .cb-grid-row .cb-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: #E94B2B; cursor: pointer; }
     /* 2-col grids (services: seeking + offer) */
     .cb-grid.cols-2 .cb-grid-header, .cb-grid.cols-2 .cb-grid-row { grid-template-columns: 1fr 72px 72px; }
-    /* 3-col grids (connections: surface + warm + direct) */
+    /* 3-col grids (connections offer: surface + warm + direct, expertise: competent + proficient + master) */
     .cb-grid.cols-3 .cb-grid-header, .cb-grid.cols-3 .cb-grid-row { grid-template-columns: 1fr 64px 64px 64px; }
+    /* 4-col grids (connections seeking timeline: now + 1-6M + 6-12M + 12+M) */
+    .cb-grid.cols-4 .cb-grid-header, .cb-grid.cols-4 .cb-grid-row { grid-template-columns: 1fr 56px 56px 56px 56px; }
+    /* 5-col grids (services: now + 1-6M + 6-12M + 12+M + offer) */
+    .cb-grid.cols-5 .cb-grid-header, .cb-grid.cols-5 .cb-grid-row { grid-template-columns: 1fr 48px 48px 48px 48px 48px; }
+    .modality-pair { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+    .modality-pair select { flex: 1; }
+    .modality-pair .arrow { color: #E94B2B; font-size: 16px; flex-shrink: 0; }
+    .modality-pair .remove-pair { background: none; border: none; color: #ff6b6b; font-size: 18px; cursor: pointer; flex-shrink: 0; padding: 0 4px; }
+    .add-pair-btn { background: transparent; border: 1px dashed rgba(233,75,43,0.4); color: #E94B2B; border-radius: 8px; padding: 8px 16px; font-size: 13px; cursor: pointer; margin-top: 4px; }
+    .add-pair-btn:hover { background: rgba(233,75,43,0.07); }
+    .skip-capital-btn { display: block; width: 100%; background: transparent; border: 1px solid #2a2a2a; color: #8892a4; border-radius: 10px; padding: 12px; font-size: 14px; cursor: pointer; margin-bottom: 16px; transition: all 0.2s; text-align: center; }
+    .skip-capital-btn:hover { border-color: #E94B2B; color: #E94B2B; }
+    .event-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .event-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: #E94B2B; cursor: pointer; flex-shrink: 0; margin-top: 2px; }
+    .event-item .event-info { display: flex; flex-direction: column; }
+    .event-item .event-name { font-size: 14px; color: #c4cad6; font-weight: 500; }
+    .event-item .event-detail { font-size: 12px; color: #4a5a76; }
+    .privacy-check { display: flex; align-items: flex-start; gap: 10px; margin-top: 8px; }
+    .privacy-check input[type="checkbox"] { width: 18px; height: 18px; accent-color: #E94B2B; cursor: pointer; flex-shrink: 0; margin-top: 2px; }
+    .privacy-check label { font-size: 14px; color: #c4cad6; line-height: 1.5; margin-bottom: 0; }
+    .privacy-check a { color: #E94B2B; text-decoration: underline; }
     @media (max-width: 500px) {
       .cb-grid.cols-2 .cb-grid-header, .cb-grid.cols-2 .cb-grid-row { grid-template-columns: 1fr 56px 56px; padding: 8px 10px; }
       .cb-grid.cols-3 .cb-grid-header, .cb-grid.cols-3 .cb-grid-row { grid-template-columns: 1fr 48px 48px 48px; padding: 8px 10px; }
+      .cb-grid.cols-4 .cb-grid-header, .cb-grid.cols-4 .cb-grid-row { grid-template-columns: 1fr 44px 44px 44px 44px; padding: 8px 10px; }
+      .cb-grid.cols-5 .cb-grid-header, .cb-grid.cols-5 .cb-grid-row { grid-template-columns: 1fr 36px 36px 36px 36px 36px; padding: 8px 8px; }
       .cb-grid-header { font-size: 10px; }
       .cb-grid-row .cb-label { font-size: 12px; }
+      .modality-pair { flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -172,22 +196,25 @@
           <div class="field-error">Please enter a valid email address.</div>
         </div>
         <div class="field">
-          <label>Phone Number</label>
-          <input type="tel" name="phone" placeholder="+1 (555) 000-0000" />
+          <label>Phone Number <span class="required">*</span></label>
+          <input type="tel" name="phone" placeholder="+1 (555) 000-0000" required />
+          <div class="field-error">Please enter your phone number.</div>
         </div>
         <div class="two-col">
           <div class="field">
-            <label>City</label>
-            <input type="text" name="city" placeholder="Boston" />
+            <label>City <span class="required">*</span></label>
+            <input type="text" name="city" placeholder="Boston" required />
+            <div class="field-error">Please enter your city.</div>
           </div>
           <div class="field">
-            <label>State / Province</label>
-            <input type="text" name="state" placeholder="MA" />
+            <label>State / Province <span class="required">*</span></label>
+            <input type="text" name="state" placeholder="MA" required />
+            <div class="field-error">Please enter your state.</div>
           </div>
         </div>
         <div class="field">
           <label>Country</label>
-          <input type="text" name="country" placeholder="United States" />
+          <input type="text" name="country" placeholder="United States" value="USA" />
         </div>
         <div class="field">
           <label>How would you describe your role?</label>
@@ -206,23 +233,8 @@
         </div>
         <div class="field">
           <label>Area of Functional Expertise</label>
-          <select name="functional_expertise" onchange="toggleSelectOther(this, 'functional_expertise_other_text', ['Other'])">
-            <option value="" disabled selected>Select one...</option>
-            <option>Clinical Trial Design</option>
-            <option>Regulatory Strategy</option>
-            <option>Reimbursement | Payer Strategy</option>
-            <option>Product Development</option>
-            <option>Manufacturing | Scale Up</option>
-            <option>Quality Systems (GMP, ISO)</option>
-            <option>Commercial | Go-to-Market</option>
-            <option>Enterprise Sales</option>
-            <option>Data | AI | ML</option>
-            <option>Bioinformatics</option>
-            <option>Lab Operations</option>
-            <option>Supply Chain</option>
-            <option>Other</option>
-          </select>
-          <input type="text" id="functional_expertise_other_text" name="functional_expertise_other" placeholder="Please specify..." style="display:none;margin-top:8px;" />
+          <p class="hint" style="margin-bottom:8px;">Select up to 3 areas and your proficiency level.</p>
+          <div id="expertiseGrid"></div>
         </div>
         <div class="field">
           <label>What have you successfully accomplished in this domain?</label>
@@ -242,17 +254,8 @@
         <hr class="section-divider" />
         <div class="field">
           <label>Connections you are seeking</label>
-          <div class="checkbox-group" id="connectionsSeeking"></div>
-        </div>
-        <div class="field">
-          <label>Timeline | Urgency</label>
-          <select name="personal_timeline">
-            <option value="" disabled selected>Select one...</option>
-            <option>Now</option>
-            <option>1 - 6 Months</option>
-            <option>6 - 12 Months</option>
-            <option>12+ Months</option>
-          </select>
+          <p class="hint" style="margin-bottom:8px;">Check the timeline for each connection type you're seeking.</p>
+          <div id="connectionsSeeking"></div>
         </div>
       </div>
       <div class="nav-row">
@@ -273,6 +276,7 @@
 
     <!-- STEP 3: Capital Deployment -->
     <div class="step" data-step="3">
+      <button type="button" class="skip-capital-btn" onclick="skipCapitalDeployment()">Skip — I'm not an investor &rarr;</button>
       <div class="card">
         <div class="card-title">03 — Capital Deployment</div>
         <div class="card-desc">Let us know about your investment activity.</div>
@@ -378,6 +382,21 @@
           <label>Anything else we should know before your first match?</label>
           <textarea name="additional_notes" placeholder="Hard nos, constraints, upcoming events, timing, or anything else..." style="min-height: 100px;"></textarea>
         </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Events</div>
+        <div class="card-desc">Which upcoming events do you plan to attend?</div>
+        <div id="eventsSection"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Privacy &amp; Consent</div>
+        <div class="privacy-check">
+          <input type="checkbox" name="privacy_accepted" id="privacyCheck" required />
+          <label for="privacyCheck">I have read and agree to the <a href="https://blpn.club/policies/privacy-policy" target="_blank" rel="noopener">BLPN Privacy Policy</a>. <span class="required">*</span></label>
+        </div>
+        <div class="field-error" id="privacyError">You must accept the privacy policy to continue.</div>
       </div>
 
       <button type="submit" class="submit-btn">Submit &amp; Join the First Wave &rarr;</button>
@@ -554,6 +573,15 @@
     'Other'
   ];
 
+  const EVENTS = [
+    { name: 'BIO Week Summit', detail: 'June 21–24 | San Diego' },
+    { name: 'LSX World Congress USA', detail: 'Sept 22–24 | Boston' },
+    { name: 'The Medtech Conference', detail: 'Oct 18–21 | Boston' },
+    { name: 'Napa Investor Summit', detail: 'Jan 7–9 | Napa' },
+    { name: 'JPM Week Summit', detail: 'Jan 10–13 | San Francisco' },
+    { name: 'LSX Investival Showcase', detail: 'Mar 9–10 | Miami' }
+  ];
+
   const STEPS = 4;
   let currentStep = 1;
   const STEP_NAMES = ['Tell Us About Yourself', 'Your Company', 'Capital Deployment', 'Final Details'];
@@ -584,8 +612,11 @@
     let valid = true;
 
     required.forEach(el => {
-      const errEl = el.parentElement.querySelector('.field-error');
-      const isEmpty = !el.value.trim();
+      const isCheckbox = el.type === 'checkbox';
+      const isEmpty = isCheckbox ? !el.checked : !el.value.trim();
+      const errEl = isCheckbox
+        ? (el.closest('.privacy-check')?.parentElement?.querySelector('.field-error'))
+        : el.parentElement.querySelector('.field-error');
       el.classList.toggle('error', isEmpty);
       if (errEl) errEl.style.display = isEmpty ? 'block' : 'none';
       if (isEmpty) valid = false;
@@ -648,14 +679,18 @@
   }
 
   function buildServicesGrid(prefix) {
-    let html = '<div class="cb-grid cols-2">';
-    html += '<div class="cb-grid-header"><span>Service</span><span>Seeking</span><span>Can Offer</span></div>';
+    let html = '<div class="cb-grid cols-5">';
+    html += '<div class="cb-grid-header"><span>Service</span><span>Now</span><span>1-6M</span><span>6-12M</span><span>12+M</span><span>Offer</span></div>';
     PROFESSIONAL_SERVICES.forEach(svc => {
       const isOther = svc === 'Other';
+      const oh = isOther ? ` onchange="toggleSvcOther('${prefix}')"` : '';
       html += `<div class="cb-grid-row">
         <span class="cb-label">${svc}</span>
-        <span class="cb-check"><input type="checkbox" name="${prefix}_svc_seeking" value="${svc}" ${isOther ? `onchange="toggleSvcOther('${prefix}')"` : ''} /></span>
-        <span class="cb-check"><input type="checkbox" name="${prefix}_svc_offer" value="${svc}" ${isOther ? `onchange="toggleSvcOther('${prefix}')"` : ''} /></span>
+        <span class="cb-check"><input type="checkbox" name="${prefix}_svc_now" value="${svc}"${oh} /></span>
+        <span class="cb-check"><input type="checkbox" name="${prefix}_svc_1to6" value="${svc}"${oh} /></span>
+        <span class="cb-check"><input type="checkbox" name="${prefix}_svc_6to12" value="${svc}"${oh} /></span>
+        <span class="cb-check"><input type="checkbox" name="${prefix}_svc_12plus" value="${svc}"${oh} /></span>
+        <span class="cb-check"><input type="checkbox" name="${prefix}_svc_offer" value="${svc}"${oh} /></span>
       </div>`;
     });
     html += '</div>';
@@ -667,11 +702,9 @@
     const inp = document.getElementById(prefix + '_svc_other_text');
     if (!inp) return;
     const grid = inp.previousElementSibling;
-    const seekingOther = grid.querySelector(`input[name="${prefix}_svc_seeking"][value="Other"]`);
-    const offerOther = grid.querySelector(`input[name="${prefix}_svc_offer"][value="Other"]`);
-    const show = (seekingOther && seekingOther.checked) || (offerOther && offerOther.checked);
-    inp.style.display = show ? 'block' : 'none';
-    if (!show) inp.value = '';
+    const anyOther = grid.querySelector(`input[value="Other"]:checked`);
+    inp.style.display = anyOther ? 'block' : 'none';
+    if (!anyOther) inp.value = '';
   }
 
   function buildConnectionsGrid(name) {
@@ -708,6 +741,129 @@
     });
   }
 
+  // ── Expertise grid (Task #6) ──
+  function buildExpertiseGrid() {
+    let html = '<div class="cb-grid cols-3">';
+    html += '<div class="cb-grid-header"><span>Expertise</span><span>Competent</span><span>Proficient</span><span>Master</span></div>';
+    FUNCTIONAL_EXPERTISE.forEach(exp => {
+      const isOther = exp === 'Other';
+      const handler = isOther
+        ? 'onchange="exclusiveRow(this);enforceMaxExpertise(this);toggleExpertiseOther()"'
+        : 'onchange="exclusiveRow(this);enforceMaxExpertise(this)"';
+      html += `<div class="cb-grid-row">
+        <span class="cb-label">${exp}</span>
+        <span class="cb-check"><input type="checkbox" name="expertise" value="${exp}:Competent" ${handler} /></span>
+        <span class="cb-check"><input type="checkbox" name="expertise" value="${exp}:Proficient" ${handler} /></span>
+        <span class="cb-check"><input type="checkbox" name="expertise" value="${exp}:Master" ${handler} /></span>
+      </div>`;
+    });
+    html += '</div>';
+    html += '<input type="text" id="expertise_other_text" name="expertise_other" placeholder="Please specify expertise..." style="display:none;margin-top:8px;" />';
+    return html;
+  }
+
+  function enforceMaxExpertise(cb) {
+    const grid = cb.closest('.cb-grid');
+    const rows = grid.querySelectorAll('.cb-grid-row');
+    let count = 0;
+    rows.forEach(row => { if (row.querySelector('input:checked')) count++; });
+    if (count > 3) cb.checked = false;
+  }
+
+  function toggleExpertiseOther() {
+    const inp = document.getElementById('expertise_other_text');
+    if (!inp) return;
+    const anyChecked = document.querySelector('input[name="expertise"][value^="Other:"]:checked');
+    inp.style.display = anyChecked ? 'block' : 'none';
+    if (!anyChecked) inp.value = '';
+  }
+
+  // ── Connections seeking timeline grid (Task #7) ──
+  function buildConnectionsTimelineGrid(name) {
+    let html = '<div class="cb-grid cols-4">';
+    html += '<div class="cb-grid-header"><span>Connection Type</span><span>Now</span><span>1-6M</span><span>6-12M</span><span>12+M</span></div>';
+    CONNECTION_TYPES.forEach(ct => {
+      const isOther = ct === 'Other';
+      const handler = isOther
+        ? 'onchange="exclusiveRow(this);toggleConnSeekOther()"'
+        : 'onchange="exclusiveRow(this)"';
+      html += `<div class="cb-grid-row">
+        <span class="cb-label">${ct}</span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:Now" ${handler} /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:1-6M" ${handler} /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:6-12M" ${handler} /></span>
+        <span class="cb-check"><input type="checkbox" name="${name}" value="${ct}:12+M" ${handler} /></span>
+      </div>`;
+    });
+    html += '</div>';
+    html += `<input type="text" id="${name}_other_text" name="${name}_other" placeholder="Please specify connection type..." style="display:none;margin-top:8px;" />`;
+    return html;
+  }
+
+  function toggleConnSeekOther() {
+    const inp = document.getElementById('connections_seeking_other_text');
+    if (!inp) return;
+    const anyChecked = document.querySelector('input[name="connections_seeking"][value^="Other:"]:checked');
+    inp.style.display = anyChecked ? 'block' : 'none';
+    if (!anyChecked) inp.value = '';
+  }
+
+  // ── Modality/Disease pairs (Task #8) ──
+  function buildModalityPairs(prefix) {
+    let html = `<div id="${prefix}_modality_pairs">`;
+    html += buildModalityPairRow(prefix, 1);
+    html += '</div>';
+    html += `<button type="button" class="add-pair-btn" onclick="addModalityPair('${prefix}')" id="${prefix}_add_pair">+ Add Pair</button>`;
+    return html;
+  }
+
+  function buildModalityPairRow(prefix, num) {
+    const removeBtn = num > 1 ? `<button type="button" class="remove-pair" onclick="removeModalityPair(this)">&times;</button>` : '';
+    return `<div class="modality-pair" data-pair="${num}">
+      <select name="${prefix}_modality_${num}"><option value="" disabled selected>Modality...</option>${modalityOpts()}</select>
+      <span class="arrow">&rarr;</span>
+      <select name="${prefix}_disease_${num}" onchange="toggleSelectOther(this, '${prefix}_disease_other_text', ['Other'])"><option value="" disabled selected>Disease...</option>${targetDiseaseOpts()}</select>
+      ${removeBtn}
+    </div>`;
+  }
+
+  function addModalityPair(prefix) {
+    const container = document.getElementById(prefix + '_modality_pairs');
+    const existing = container.querySelectorAll('.modality-pair').length;
+    if (existing >= 3) return;
+    const num = existing + 1;
+    container.insertAdjacentHTML('beforeend', buildModalityPairRow(prefix, num));
+    if (num >= 3) document.getElementById(prefix + '_add_pair').style.display = 'none';
+  }
+
+  function removeModalityPair(btn) {
+    const pair = btn.closest('.modality-pair');
+    const container = pair.parentElement;
+    const prefix = container.id.replace('_modality_pairs', '');
+    pair.remove();
+    if (container.querySelectorAll('.modality-pair').length < 3) {
+      document.getElementById(prefix + '_add_pair').style.display = '';
+    }
+  }
+
+  // ── Skip capital deployment (Task #10) ──
+  function skipCapitalDeployment() {
+    showStep(4);
+  }
+
+  // ── Events builder (Task #11) ──
+  function buildEventsSection() {
+    return EVENTS.map(ev =>
+      `<label class="event-item">
+        <input type="checkbox" name="events" value="${ev.name}" />
+        <span class="event-info">
+          <span class="event-name">${ev.name}</span>
+          <span class="event-detail">${ev.detail}</span>
+        </span>
+      </label>`
+    ).join('');
+  }
+
   // ── Company blocks ──
   let companyCount = 0;
 
@@ -722,8 +878,7 @@
 <div class="field"><label>Company Website</label><input type="url" name="${prefix}_website" placeholder="https://yourcompany.com" /></div>
 <div class="field"><label>Your Role / Title</label><input type="text" name="${prefix}_title" placeholder="Founder & CEO" /></div>
 <div class="field"><label>Vertical</label><select name="${prefix}_vertical" onchange="toggleSelectOther(this, '${prefix}_vertical_other_text', ['Other / Miscellaneous', 'Service Provider'])"><option value="" disabled selected>Select one...</option>${verticalOpts()}</select><input type="text" id="${prefix}_vertical_other_text" name="${prefix}_vertical_other" placeholder="Please specify..." style="display:none;margin-top:8px;" /></div>
-<div class="field"><label>Modality</label><select name="${prefix}_modality"><option value="" disabled selected>Select one...</option>${modalityOpts()}</select></div>
-<div class="field"><label>Target Disease</label><select name="${prefix}_target_disease" onchange="toggleSelectOther(this, '${prefix}_target_other_text', ['Other'])"><option value="" disabled selected>Select one...</option>${targetDiseaseOpts()}</select><input type="text" id="${prefix}_target_other_text" name="${prefix}_target_other" placeholder="Please specify..." style="display:none;margin-top:8px;" /></div>
+<div class="field"><label>Modality &rarr; Disease Indication</label><p class="hint" style="margin-bottom:8px;">Add up to 3 modality/disease pairs.</p>${buildModalityPairs(prefix)}<input type="text" id="${prefix}_disease_other_text" name="${prefix}_disease_other" placeholder="Please specify disease..." style="display:none;margin-top:8px;" /></div>
 <div class="two-col">
 <div class="field"><label>Company Stage</label><select name="${prefix}_company_stage"><option value="" disabled selected>Select one...</option>${companyStageOpts()}</select></div>
 <div class="field"><label>Financial Stage</label><select name="${prefix}_financial_stage"><option value="" disabled selected>Select one...</option>${financialStageOpts()}</select></div>
@@ -731,8 +886,7 @@
 <div class="field"><label>How much are you raising?</label><select name="${prefix}_raise"><option value="" disabled selected>Select one...</option>${raiseOpts()}</select></div>
 <div class="field"><label>What is your number one priority in the next 90 days?</label><textarea name="${prefix}_priority_90" placeholder="Your top priority for this company..." style="min-height:70px;"></textarea></div>
 <hr class="section-divider" />
-<div class="field"><label>Professional Services</label><p class="hint" style="margin-bottom:10px;">Check which services you are seeking and which you can offer.</p>${buildServicesGrid(prefix)}</div>
-<div class="field"><label>Seeking Timeline | Urgency</label><select name="${prefix}_seeking_timeline"><option value="" disabled selected>Select one...</option>${timelineOpts()}</select></div>
+<div class="field"><label>Professional Services</label><p class="hint" style="margin-bottom:10px;">Check when you need each service and what you can offer.</p>${buildServicesGrid(prefix)}</div>
 </div>`;
   }
 
@@ -764,9 +918,13 @@
   }
 
   // ── Init checkboxes (Step 1) ──
+  document.getElementById('expertiseGrid').innerHTML = buildExpertiseGrid();
   document.getElementById('communityParticipation').innerHTML = COMMUNITY_PARTICIPATION.map(t => chkItem('community_participation', t)).join('');
   document.getElementById('connectionsOffer').innerHTML = buildConnectionsGrid('connections_offer');
-  document.getElementById('connectionsSeeking').innerHTML = CONNECTION_TYPES.map(t => chkItem('connections_seeking', t)).join('');
+  document.getElementById('connectionsSeeking').innerHTML = buildConnectionsTimelineGrid('connections_seeking');
+
+  // ── Init events (Step 4) ──
+  document.getElementById('eventsSection').innerHTML = buildEventsSection();
 
   // ── Init investor verticals (Step 3) ──
   document.getElementById('invVerticals').innerHTML = VERTICALS.map(v => chkItem('inv_vertical', v)).join('');
@@ -910,32 +1068,62 @@
       }
     }
 
+    // Collect expertise from grid
+    const expertiseChecked = collectChecked('expertise');
+    const expertiseOther = document.getElementById('expertise_other_text')?.value || '';
+    const expertiseStr = expertiseChecked.map(v => {
+      if (v.startsWith('Other:') && expertiseOther) return `Other (${expertiseOther}):${v.split(':')[1]}`;
+      return v;
+    }).join(', ');
+
     // Build companies array
     const companies = [];
     document.querySelectorAll('.company-block').forEach(block => {
       const idx = block.dataset.idx;
       const prefix = `co_${idx}`;
-      const svcSeeking = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_seeking"]:checked`)).map(c => c.value);
-      const svcOffer = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_offer"]:checked`)).map(c => c.value);
       const verticalVal = payload[`${prefix}_vertical`] || '';
       const verticalOther = payload[`${prefix}_vertical_other`] || '';
-      const targetVal = payload[`${prefix}_target_disease`] || '';
-      const targetOther = payload[`${prefix}_target_other`] || '';
       const svcOtherText = payload[`${prefix}_svc_other`] || '';
+      const diseaseOther = payload[`${prefix}_disease_other`] || '';
+      const appendOther = (arr) => arr.map(s => s === 'Other' && svcOtherText ? `Other: ${svcOtherText}` : s);
+
+      // Collect modality → disease pairs
+      const pairs = [];
+      block.querySelectorAll('.modality-pair').forEach(pair => {
+        const modSel = pair.querySelector('select[name$="_modality_' + pair.dataset.pair + '"]') ||
+                       pair.querySelector('select:first-of-type');
+        const disSel = pair.querySelectorAll('select')[1];
+        const mod = modSel?.value || '';
+        const dis = disSel?.value || '';
+        if (dis === 'Other' && diseaseOther) {
+          if (mod || dis) pairs.push(`${mod} → Other: ${diseaseOther}`);
+        } else {
+          if (mod || dis) pairs.push(`${mod} → ${dis}`);
+        }
+      });
+
+      // Collect services by timeline bucket
+      const svcNow = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_now"]:checked`)).map(c => c.value);
+      const svc1to6 = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_1to6"]:checked`)).map(c => c.value);
+      const svc6to12 = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_6to12"]:checked`)).map(c => c.value);
+      const svc12plus = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_12plus"]:checked`)).map(c => c.value);
+      const svcOffer = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_offer"]:checked`)).map(c => c.value);
+
       companies.push({
         name: payload[`${prefix}_name`] || '',
         website: payload[`${prefix}_website`] || '',
         title: payload[`${prefix}_title`] || '',
         vertical: (verticalVal === 'Other / Miscellaneous' || verticalVal === 'Service Provider') && verticalOther ? `${verticalVal}: ${verticalOther}` : verticalVal,
-        modality: payload[`${prefix}_modality`] || '',
-        target_disease: targetVal === 'Other' && targetOther ? `Other: ${targetOther}` : targetVal,
+        modality_pairs: pairs.join('; '),
         company_stage: payload[`${prefix}_company_stage`] || '',
         financial_stage: payload[`${prefix}_financial_stage`] || '',
         raise: payload[`${prefix}_raise`] || '',
         priority_90: payload[`${prefix}_priority_90`] || '',
-        services_seeking: svcSeeking.map(s => s === 'Other' && svcOtherText ? `Other: ${svcOtherText}` : s).join(', '),
-        services_offer: svcOffer.map(s => s === 'Other' && svcOtherText ? `Other: ${svcOtherText}` : s).join(', '),
-        seeking_timeline: payload[`${prefix}_seeking_timeline`] || ''
+        services_now: appendOther(svcNow).join(', '),
+        services_1to6: appendOther(svc1to6).join(', '),
+        services_6to12: appendOther(svc6to12).join(', '),
+        services_12plus: appendOther(svc12plus).join(', '),
+        services_offer: appendOther(svcOffer).join(', ')
       });
     });
 
@@ -952,25 +1140,25 @@
       "State": payload.state || '',
       "Country": payload.country || '',
       "Member Role": payload.member_role || '',
-      "Functional Expertise": (payload.functional_expertise === 'Other' && payload.functional_expertise_other) ? `Other: ${payload.functional_expertise_other}` : (payload.functional_expertise || ''),
+      "Functional Expertise": expertiseStr,
       "Accomplishments": payload.domain_accomplishments || '',
       "Community Participation": collectChecked('community_participation').join(', '),
       "Connections Offer": collectChecked('connections_offer').join(', '),
       "Connections Seeking": collectChecked('connections_seeking').join(', '),
-      "Timeline Urgency": payload.personal_timeline || '',
       // Primary company — flat columns
       "Company": primary.name || '',
       "Title": primary.title || '',
       "Vertical": primary.vertical || '',
-      "Modality": primary.modality || '',
-      "Target Disease": primary.target_disease || '',
+      "Modality Pairs": primary.modality_pairs || '',
       "Company Stage": primary.company_stage || '',
       "Financial Stage": primary.financial_stage || '',
       "Raise Amount": primary.raise || '',
       "Priority 90 Days": primary.priority_90 || '',
-      "Professional Services Seeking": primary.services_seeking || '',
+      "Services Seeking Now": primary.services_now || '',
+      "Services Seeking 1-6M": primary.services_1to6 || '',
+      "Services Seeking 6-12M": primary.services_6to12 || '',
+      "Services Seeking 12+M": primary.services_12plus || '',
       "Professional Services Offering": primary.services_offer || '',
-      "Seeking Timeline": primary.seeking_timeline || '',
       // Capital
       "Deploying Capital": payload.deploying_capital || '',
       "Investment Mandate": payload.investment_mandate || '',
@@ -986,7 +1174,9 @@
       "Investor Notes": payload.investor_notes || '',
       // Additional companies (2+) as JSON, primary excluded
       "Companies": companies.length > 1 ? JSON.stringify(companies.slice(1)) : '',
-      // Final
+      // Events & final
+      "Events": collectChecked('events').join(', '),
+      "Privacy Accepted": document.getElementById('privacyCheck')?.checked ? 'Yes' : 'No',
       "Additional Notes": payload.additional_notes || '',
       "Submitted At": new Date().toISOString()
     };
