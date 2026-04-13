@@ -96,22 +96,22 @@
 
     /* ── Checkbox Grids (services, connections) ── */
     .cb-grid { border: 1px solid #2a2a2a; border-radius: 10px; overflow: hidden; margin-top: 8px; }
-    .cb-grid-header { display: grid; background: #111; border-bottom: 1px solid #2a2a2a; padding: 10px 16px; font-size: 12px; font-weight: 600; color: #E94B2B; text-transform: uppercase; letter-spacing: 0.5px; }
-    .cb-grid-header span:not(:first-child) { text-align: center; }
+    .cb-grid-header { display: grid; background: #111; border-bottom: 1px solid #2a2a2a; padding: 10px 16px; font-size: 11px; font-weight: 600; color: #E94B2B; text-transform: uppercase; letter-spacing: 0.3px; }
+    .cb-grid-header span:not(:first-child) { text-align: center; word-break: break-word; line-height: 1.3; }
     .cb-grid-row { display: grid; padding: 8px 16px; border-bottom: 1px solid #1a1a1a; align-items: center; transition: background 0.15s; }
     .cb-grid-row:last-child { border-bottom: none; }
     .cb-grid-row:hover { background: rgba(233,75,43,0.03); }
     .cb-grid-row .cb-label { font-size: 13px; color: #c4cad6; }
     .cb-grid-row .cb-check { text-align: center; }
     .cb-grid-row .cb-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: #E94B2B; cursor: pointer; }
-    /* 2-col grids (services: seeking + offer) */
+    /* 2-col grids */
     .cb-grid.cols-2 .cb-grid-header, .cb-grid.cols-2 .cb-grid-row { grid-template-columns: 1fr 72px 72px; }
-    /* 3-col grids (connections offer: surface + warm + direct, expertise: competent + proficient + master) */
-    .cb-grid.cols-3 .cb-grid-header, .cb-grid.cols-3 .cb-grid-row { grid-template-columns: 1fr 64px 64px 64px; }
-    /* 4-col grids (connections seeking timeline: now + 1-6M + 6-12M + 12+M) */
-    .cb-grid.cols-4 .cb-grid-header, .cb-grid.cols-4 .cb-grid-row { grid-template-columns: 1fr 56px 56px 56px 56px; }
-    /* 5-col grids (services: now + 1-6M + 6-12M + 12+M + offer) */
-    .cb-grid.cols-5 .cb-grid-header, .cb-grid.cols-5 .cb-grid-row { grid-template-columns: 1fr 48px 48px 48px 48px 48px; }
+    /* 3-col grids (connections offer, expertise) */
+    .cb-grid.cols-3 .cb-grid-header, .cb-grid.cols-3 .cb-grid-row { grid-template-columns: 1fr 80px 80px 80px; }
+    /* 4-col grids (connections seeking timeline) */
+    .cb-grid.cols-4 .cb-grid-header, .cb-grid.cols-4 .cb-grid-row { grid-template-columns: 1fr 64px 64px 64px 64px; }
+    /* 5-col grids (services: timeline + offer) */
+    .cb-grid.cols-5 .cb-grid-header, .cb-grid.cols-5 .cb-grid-row { grid-template-columns: 1fr 56px 56px 56px 56px 56px; }
     .modality-pair { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
     .modality-pair select { flex: 1; }
     .modality-pair .arrow { color: #E94B2B; font-size: 16px; flex-shrink: 0; }
@@ -130,13 +130,36 @@
     .privacy-check label { font-size: 14px; color: #c4cad6; line-height: 1.5; margin-bottom: 0; }
     .privacy-check a { color: #E94B2B; text-decoration: underline; }
     @media (max-width: 500px) {
-      .cb-grid.cols-2 .cb-grid-header, .cb-grid.cols-2 .cb-grid-row { grid-template-columns: 1fr 56px 56px; padding: 8px 10px; }
-      .cb-grid.cols-3 .cb-grid-header, .cb-grid.cols-3 .cb-grid-row { grid-template-columns: 1fr 48px 48px 48px; padding: 8px 10px; }
-      .cb-grid.cols-4 .cb-grid-header, .cb-grid.cols-4 .cb-grid-row { grid-template-columns: 1fr 44px 44px 44px 44px; padding: 8px 10px; }
-      .cb-grid.cols-5 .cb-grid-header, .cb-grid.cols-5 .cb-grid-row { grid-template-columns: 1fr 36px 36px 36px 36px 36px; padding: 8px 8px; }
-      .cb-grid-header { font-size: 10px; }
-      .cb-grid-row .cb-label { font-size: 12px; }
-      .modality-pair { flex-wrap: wrap; }
+      /* Layout breathing room */
+      body { padding: 20px 10px 60px; }
+      .card, .company-block { padding: 20px 14px; }
+      h1 { font-size: 26px; }
+      .subtitle { font-size: 14px; }
+      .two-col { gap: 10px; }
+      .field { margin-bottom: 14px; }
+      input[type="text"], input[type="email"], input[type="url"], input[type="tel"], select, textarea { font-size: 14px; padding: 10px 12px; }
+
+      /* Grid headers — compact and readable */
+      .cb-grid-header { font-size: 9px; letter-spacing: 0; padding: 8px 8px; }
+      .cb-grid-header span:not(:first-child) { font-size: 9px; line-height: 1.2; }
+      .cb-grid-row { padding: 7px 8px; }
+      .cb-grid-row .cb-label { font-size: 11px; line-height: 1.3; }
+      .cb-grid-row .cb-check input[type="checkbox"] { width: 15px; height: 15px; }
+
+      /* Grid column widths — tuned for ~355px container */
+      .cb-grid.cols-2 .cb-grid-header, .cb-grid.cols-2 .cb-grid-row { grid-template-columns: 1fr 52px 52px; }
+      .cb-grid.cols-3 .cb-grid-header, .cb-grid.cols-3 .cb-grid-row { grid-template-columns: 1fr 52px 52px 52px; }
+      .cb-grid.cols-4 .cb-grid-header, .cb-grid.cols-4 .cb-grid-row { grid-template-columns: 1fr 46px 46px 46px 46px; }
+      .cb-grid.cols-5 .cb-grid-header, .cb-grid.cols-5 .cb-grid-row { grid-template-columns: 1fr 40px 40px 40px 40px 40px; }
+
+      /* Modality pairs */
+      .modality-pair { flex-direction: column; gap: 6px; }
+      .modality-pair select { width: 100%; font-size: 13px; }
+      .modality-pair .arrow { display: none; }
+
+      /* Navigation */
+      .nav-row { gap: 8px; }
+      .btn-next, .btn-back { padding: 13px 10px; font-size: 14px; }
     }
   </style>
 </head>
@@ -744,7 +767,7 @@
   // ── Expertise grid (Task #6) ──
   function buildExpertiseGrid() {
     let html = '<div class="cb-grid cols-3">';
-    html += '<div class="cb-grid-header"><span>Expertise</span><span>Competent</span><span>Proficient</span><span>Master</span></div>';
+    html += '<div class="cb-grid-header"><span>Expertise</span><span>Comp.</span><span>Prof.</span><span>Master</span></div>';
     FUNCTIONAL_EXPERTISE.forEach(exp => {
       const isOther = exp === 'Other';
       const handler = isOther
