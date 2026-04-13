@@ -95,6 +95,22 @@
     .success-icon { font-size: 48px; margin-bottom: 20px; }
     .success h2 { font-size: 24px; color: #fff; margin-bottom: 12px; }
     .success p { color: #8892a4; line-height: 1.6; }
+
+    /* ── Professional Services Grid ── */
+    .services-grid { border: 1px solid #2a2a2a; border-radius: 10px; overflow: hidden; margin-top: 8px; }
+    .services-header { display: grid; grid-template-columns: 1fr 72px 72px; background: #111; border-bottom: 1px solid #2a2a2a; padding: 10px 16px; font-size: 12px; font-weight: 600; color: #E94B2B; text-transform: uppercase; letter-spacing: 0.5px; }
+    .services-header span:nth-child(2), .services-header span:nth-child(3) { text-align: center; }
+    .services-row { display: grid; grid-template-columns: 1fr 72px 72px; padding: 8px 16px; border-bottom: 1px solid #1a1a1a; align-items: center; transition: background 0.15s; }
+    .services-row:last-child { border-bottom: none; }
+    .services-row:hover { background: rgba(233,75,43,0.03); }
+    .services-row .svc-name { font-size: 13px; color: #c4cad6; }
+    .services-row .svc-check { text-align: center; }
+    .services-row .svc-check input[type="checkbox"] { width: 16px; height: 16px; accent-color: #E94B2B; cursor: pointer; }
+    @media (max-width: 500px) {
+      .services-header, .services-row { grid-template-columns: 1fr 56px 56px; padding: 8px 10px; }
+      .services-header { font-size: 11px; }
+      .services-row .svc-name { font-size: 12px; }
+    }
   </style>
 </head>
 <body>
@@ -103,7 +119,7 @@
   <!-- Header -->
   <div class="header">
     <img src="blpn-logo.jpg" alt="BLPN Logo" class="logo" />
-    <div class="badge">⚾ Beta — First Wave</div>
+    <div class="badge">Beta — First Wave</div>
     <h1>Step into the <span>Bullpen</span>.</h1>
     <p class="subtitle">We're building a smarter way to connect inside BLPN. Tell us who you are — we'll handle the rest.</p>
   </div>
@@ -123,7 +139,7 @@
   <!-- Form -->
   <form id="intakeForm" novalidate>
 
-    <!-- ══ STEP 1: Who You Are ══ -->
+    <!-- STEP 1: Who You Are -->
     <div class="step active" data-step="1">
       <div class="card">
         <div class="card-title">01 — Who You Are</div>
@@ -174,34 +190,100 @@
           <label>How would you describe yourself?</label>
           <select name="member_role">
             <option value="" disabled selected>Select one...</option>
-            <option>Founder / Co-founder</option>
-            <option>Operator / Executive</option>
-            <option>Investor (Angel / VC)</option>
-            <option>Advisor / KOL</option>
-            <option>BD / Partnerships</option>
-            <option>Clinical / Research</option>
+            <option>Founder | Co-Founder | Operator | Executive</option>
+            <option>Investor</option>
+            <option>Board Member</option>
+            <option>Advisor</option>
+            <option>Academic</option>
+            <option>Government</option>
+            <option>Non-Profit</option>
             <option>Service Provider</option>
             <option>Other</option>
           </select>
         </div>
+        <div class="field">
+          <label>Area of Functional Expertise</label>
+          <select name="functional_expertise">
+            <option value="" disabled selected>Select one...</option>
+            <option>Clinical Trial Design</option>
+            <option>Regulatory Strategy</option>
+            <option>Reimbursement | Payer Strategy</option>
+            <option>Product Development</option>
+            <option>Manufacturing | Scale Up</option>
+            <option>Quality Systems (GMP, ISO)</option>
+            <option>Commercial | Go-to-Market</option>
+            <option>Enterprise Sales</option>
+            <option>Data | AI | ML</option>
+            <option>Bioinformatics</option>
+            <option>Lab Operations</option>
+            <option>Supply Chain</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>What have you successfully accomplished in this domain?</label>
+          <textarea name="domain_accomplishments" placeholder="Describe your key accomplishments in your area of expertise..." style="min-height:80px;"></textarea>
+        </div>
+        <hr class="section-divider" />
+        <div class="field">
+          <label>How would you like to participate in the BLPN community?</label>
+          <div class="checkbox-group" id="communityParticipation"></div>
+        </div>
+        <hr class="section-divider" />
+        <div class="field">
+          <label>Connections you could offer from your network</label>
+          <div class="checkbox-group" id="connectionsOffer"></div>
+        </div>
+        <div class="field">
+          <label>Connection Strength</label>
+          <select name="connection_strength">
+            <option value="" disabled selected>Select one...</option>
+            <option>Surface-Level Connection</option>
+            <option>Warm / Indirect Connection</option>
+            <option>Direct / Strong Connection</option>
+          </select>
+        </div>
+        <hr class="section-divider" />
+        <div class="field">
+          <label>Connections you are seeking</label>
+          <div class="checkbox-group" id="connectionsSeeking"></div>
+        </div>
+        <div class="field">
+          <label>Timeline | Urgency</label>
+          <select name="personal_timeline">
+            <option value="" disabled selected>Select one...</option>
+            <option>Now</option>
+            <option>1 - 6 Months</option>
+            <option>6 - 12 Months</option>
+            <option>12+ Months</option>
+          </select>
+        </div>
       </div>
       <div class="nav-row">
-        <button type="button" class="btn-next" onclick="nextStep()">Continue → Your Company</button>
+        <button type="button" class="btn-next" onclick="nextStep()">Continue &rarr; Your Company</button>
       </div>
     </div>
 
-    <!-- ══ STEP 2: Company / Companies ══ -->
+    <!-- STEP 2: Your Company -->
     <div class="step" data-step="2">
       <div id="companiesContainer"></div>
       <button type="button" class="add-btn" id="addCompanyBtn">+ Add Another Company / Role</button>
 
+      <div class="nav-row">
+        <button type="button" class="btn-back" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn-next" onclick="nextStep()">Continue &rarr; Capital Deployment</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Capital Deployment -->
+    <div class="step" data-step="3">
       <div class="card">
         <div class="card-title">03 — Capital Deployment</div>
         <div class="card-desc">Skip this if you're not actively investing.</div>
         <div class="toggle-field">
           <div class="toggle-row">
             <span class="toggle-label">Are you actively deploying capital?</span>
-            <div class="toggle-options">
+            <div class="toggle-options" id="deployToggleOpts">
               <div class="toggle-opt" data-val="Yes" onclick="toggleInvestor(this)">Yes</div>
               <div class="toggle-opt" data-val="No" onclick="toggleInvestor(this)">No</div>
             </div>
@@ -212,6 +294,16 @@
           <div class="field">
             <label>Investment Mandate</label>
             <textarea name="investment_mandate" placeholder="Describe your thesis — e.g. 'Early-stage biotech, Series A, focus on oncology and rare disease'" style="min-height:80px;"></textarea>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label>Total Assets Under Management</label>
+              <input type="text" name="total_aum" placeholder="e.g. $50M" />
+            </div>
+            <div class="field">
+              <label>Most Recent Fund Size</label>
+              <input type="text" name="recent_fund_size" placeholder="e.g. $25M" />
+            </div>
           </div>
           <div class="two-col">
             <div class="field">
@@ -232,8 +324,41 @@
             </div>
           </div>
           <div class="field">
+            <label>How do you typically participate in investments?</label>
+            <select name="investment_participation">
+              <option value="" disabled selected>Select one...</option>
+              <option>Lead | Co-Lead Investor</option>
+              <option>Participate alongside a lead investor</option>
+              <option>Opportunistic | No strong preference</option>
+            </select>
+          </div>
+          <div class="toggle-field">
+            <div class="toggle-row">
+              <span class="toggle-label">Do you require Board Participation?</span>
+              <div class="toggle-options">
+                <div class="toggle-opt" data-val="Yes" onclick="toggleGeneric(this, 'boardParticipationInput')">Yes</div>
+                <div class="toggle-opt" data-val="No" onclick="toggleGeneric(this, 'boardParticipationInput')">No</div>
+              </div>
+            </div>
+            <input type="hidden" name="board_participation" id="boardParticipationInput" value="" />
+          </div>
+          <div class="toggle-field">
+            <div class="toggle-row">
+              <span class="toggle-label">Do you have dry powder available?</span>
+              <div class="toggle-options">
+                <div class="toggle-opt" data-val="Yes" onclick="toggleGeneric(this, 'dryPowderInput')">Yes</div>
+                <div class="toggle-opt" data-val="No" onclick="toggleGeneric(this, 'dryPowderInput')">No</div>
+              </div>
+            </div>
+            <input type="hidden" name="dry_powder" id="dryPowderInput" value="" />
+          </div>
+          <div class="field">
             <label>Preferred Verticals</label>
             <div class="checkbox-group" id="invVerticals"></div>
+          </div>
+          <div class="field">
+            <label>Do you have a geographic area of focus?</label>
+            <input type="text" name="investor_geography" placeholder="e.g. US East Coast, EU, Global..." />
           </div>
           <div class="field">
             <label>Anything else about your investing criteria?</label>
@@ -243,53 +368,15 @@
       </div>
 
       <div class="nav-row">
-        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
-        <button type="button" class="btn-next" onclick="nextStep()">Continue → What You Offer</button>
+        <button type="button" class="btn-back" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn-next" onclick="nextStep()">Continue &rarr; Final Step</button>
       </div>
     </div>
 
-    <!-- ══ STEP 3: What You Offer & Seek ══ -->
-    <div class="step" data-step="3">
-      <div class="card">
-        <div class="card-title">04 — What You Can Offer</div>
-        <div class="card-desc">This is the most important section — the more specific you are, the better your matches.</div>
-        <div class="field">
-          <label>What can you genuinely offer other BLPN members? <span class="required">*</span></label>
-          <textarea name="can_offer" placeholder="Be specific — intros to VCs in oncology, access to clinical sites in the Midwest, operational experience scaling diagnostics companies..." required></textarea>
-          <p class="hint">Specificity wins. Vague answers lead to vague matches.</p>
-          <div class="field-error">Please describe what you can offer.</div>
-        </div>
-        <div class="field">
-          <label>What types of connections can you make for others?</label>
-          <div class="checkbox-group" id="offerTypes"></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">05 — What You're Looking For</div>
-        <div class="card-desc">Be direct. This is what drives your matches.</div>
-        <div class="field">
-          <label>What do you actually need in the next 6–12 months? <span class="required">*</span></label>
-          <textarea name="looking_for" placeholder="Be direct — Series A lead, clinical investigator in Boston, co-founder with regulatory background..." required></textarea>
-          <p class="hint">Don't be shy. Everyone here is looking for something.</p>
-          <div class="field-error">Please describe what you're looking for.</div>
-        </div>
-        <div class="field">
-          <label>What types of connections are you actively seeking?</label>
-          <div class="checkbox-group" id="seekingTypes"></div>
-        </div>
-      </div>
-
-      <div class="nav-row">
-        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
-        <button type="button" class="btn-next" onclick="nextStep()">Continue → Final Step</button>
-      </div>
-    </div>
-
-    <!-- ══ STEP 4: Final Details ══ -->
+    <!-- STEP 4: Final Details -->
     <div class="step" data-step="4">
       <div class="card">
-        <div class="card-title">06 — Final Details</div>
+        <div class="card-title">04 — Final Details</div>
         <div class="card-desc">Almost done. Any context that doesn't fit elsewhere.</div>
         <div class="field">
           <label>Anything else we should know before your first match?</label>
@@ -297,14 +384,14 @@
         </div>
       </div>
 
-      <button type="submit" class="submit-btn">Submit &amp; Join the First Wave →</button>
+      <button type="submit" class="submit-btn">Submit &amp; Join the First Wave &rarr;</button>
       <p class="footer-note">
         Your info stays within BLPN — no spam, no marketplaces.<br/>
         We'll reach out before Miami to confirm your first curated intros.
       </p>
 
       <div class="nav-row" style="margin-top: 16px;">
-        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn-back" onclick="prevStep()">&larr; Back</button>
       </div>
     </div>
 
@@ -312,7 +399,7 @@
 
   <!-- Success -->
   <div class="success" id="successMsg">
-    <div class="success-icon">⚾</div>
+    <div class="success-icon">&#9918;</div>
     <h2>You're in the bullpen.</h2>
     <p>We've got your profile. Expect to hear from us with your enriched profile to validate in the near future.</p>
   </div>
@@ -320,16 +407,162 @@
 </div>
 
 <script>
-  // ── Data ──
-  const VERTICALS = ['Drugs / Biotech / Therapeutics','Diagnostics','Digital Health','Medical Devices','Neurotechnology','Longevity / Regenerative Medicine','Deep Tech / Synthetic Biology','Tools & Platforms','AI / Data Science in Healthcare','Manufacturing & Scale-up','Services','Agriculture / FoodTech / Cellular Agriculture','Critical Minerals / Advanced Materials','Aerospace / Space Biotech','Energy / Climate / Planetary Health','Computational Biology / Bioinformatics','Behavioral / Mental Health','Veterinary / Animal Health','SaaS / Infrastructure','Other (Specify)'];
-  const OFFERS = ['Investor introductions','Clinical / trial site access','BD / partnership opportunities','KOL / advisor connections','Regulatory / legal expertise','Talent / hiring connections','Customer / commercial intros','Operational / scaling experience','Other'];
-  const SEEKING = ['Capital / investment','Clinical trial sites / investigators','Strategic BD partners','KOLs / advisors','Co-founder / key hire','Regulatory / reimbursement guidance','Customer / commercial traction','Peer founders (same stage)','Other'];
+  // ── Data Arrays ──
+  const VERTICALS = [
+    'Therapeutics & Drug Development',
+    'Diagnostics & Precision Medicine',
+    'Medical Devices & Interventional Technologies',
+    'Digital Health & Software',
+    'Research Tools & Life Science Platforms',
+    'Computational Biology & AI for Life Sciences',
+    'Synthetic Biology & Bioengineering',
+    'Biomanufacturing & Supply Chain',
+    'Healthcare Services & Clinical Infrastructure',
+    'Neurotechnology',
+    'Longevity & Regenerative Medicine',
+    'Mental & Behavioral Health',
+    'Animal Health & Veterinary',
+    'Agriculture & Food Biotechnology',
+    'Climate, Energy & Environmental Biotech',
+    'Space & Extreme Environment Biotechnology',
+    'Enabling Technologies (Deep Tech Adjacent)',
+    'Horizontal SaaS & Infrastructure',
+    'Other / Miscellaneous',
+    'Service Provider'
+  ];
+
+  const MODALITIES = [
+    'Small molecules',
+    'Antibodies | biologics',
+    'Peptides',
+    'RNA therapeutics',
+    'Cell therapy',
+    'Gene therapy',
+    'Gene editing',
+    'Vaccines',
+    'Microbiome therapies',
+    'Radiopharmaceuticals'
+  ];
+
+  const TARGET_DISEASES = [
+    'Oncology',
+    'Neuro',
+    'Cardio',
+    'Infectious Disease',
+    'Inflammation',
+    'Endocrinology & Metabolic Diseases',
+    'Respiratory',
+    'Rare Disease',
+    'Mental Health',
+    'Other'
+  ];
+
+  const COMPANY_STAGES = [
+    'Preclinical',
+    'IND | IDE',
+    'Clinical Trials',
+    'Regulatory Approval',
+    'Commercial Launch',
+    'Scaling | Exit'
+  ];
+
+  const FINANCIAL_STAGES = [
+    'Idea | Incorporated',
+    'Seed',
+    'Series A',
+    'Series B+',
+    'Growth | Late Stage',
+    'Investor',
+    'NA'
+  ];
+
+  const RAISE_OPTIONS = [
+    'Not Currently raising',
+    'Under $500K',
+    '$500K – $1M',
+    '$1M – $3M',
+    '$3M – $5M',
+    '$5M – $10M',
+    '$10M – $25M',
+    '$25M+',
+    'Investor'
+  ];
+
+  const CONNECTION_TYPES = [
+    'Investor',
+    'Clinical | Trial site access',
+    'BD | partnerships',
+    'KOL | Advisor',
+    'Regulatory | Legal',
+    'Talent search',
+    'Customer | Commercial',
+    'Operational | Scaling',
+    'Other'
+  ];
+
+  const COMMUNITY_PARTICIPATION = [
+    'Introductions / network support',
+    'Advisory roles',
+    'Hands-on operating roles',
+    'Board positions',
+    'Investment opportunities'
+  ];
+
+  const CONNECTION_STRENGTHS = [
+    'Surface-Level Connection',
+    'Warm / Indirect Connection',
+    'Direct / Strong Connection'
+  ];
+
+  const TIMELINE_URGENCY = [
+    'Now',
+    '1 - 6 Months',
+    '6 - 12 Months',
+    '12+ Months'
+  ];
+
+  const PROFESSIONAL_SERVICES = [
+    'Advisory & Strategic Consulting',
+    'Legal',
+    'Regulatory Affairs',
+    'Quality (QA/QC & Compliance)',
+    'Clinical Research (CRO & Clinical Operations)',
+    'Preclinical & Lab Services',
+    'Manufacturing & CDMO',
+    'Supply Chain & Logistics',
+    'Assay & Diagnostic Development',
+    'Software & Data Infrastructure',
+    'Cybersecurity & IT',
+    'Grant Writing & Non-Dilutive Funding',
+    'Finance & Accounting',
+    'Fractional Leadership',
+    'Talent & Recruiting',
+    'Marketing & Communications',
+    'Insurance & Risk Management',
+    'Facilities & Real Estate',
+    'Procurement & Equipment Sourcing',
+    'Other'
+  ];
+
+  const FUNCTIONAL_EXPERTISE = [
+    'Clinical Trial Design',
+    'Regulatory Strategy',
+    'Reimbursement | Payer Strategy',
+    'Product Development',
+    'Manufacturing | Scale Up',
+    'Quality Systems (GMP, ISO)',
+    'Commercial | Go-to-Market',
+    'Enterprise Sales',
+    'Data | AI | ML',
+    'Bioinformatics',
+    'Lab Operations',
+    'Supply Chain',
+    'Other'
+  ];
 
   const STEPS = 4;
   let currentStep = 1;
-
-  // ── Step labels ──
-  const STEP_NAMES = ['Who You Are', 'Your Company', 'What You Offer', 'Final Details'];
+  const STEP_NAMES = ['Who You Are', 'Your Company', 'Capital Deployment', 'Final Details'];
 
   // ── Progress ──
   function renderDots() {
@@ -385,19 +618,26 @@
     if (currentStep > 1) showStep(currentStep - 1);
   }
 
-  // ── Company blocks ──
+  // ── Helpers ──
   function verticalOpts() { return VERTICALS.map(v => `<option>${v}</option>`).join(''); }
+  function modalityOpts() { return MODALITIES.map(m => `<option>${m}</option>`).join(''); }
+  function targetDiseaseOpts() { return TARGET_DISEASES.map(d => `<option>${d}</option>`).join(''); }
+  function companyStageOpts() { return COMPANY_STAGES.map(s => `<option>${s}</option>`).join(''); }
+  function financialStageOpts() { return FINANCIAL_STAGES.map(s => `<option>${s}</option>`).join(''); }
+  function raiseOpts() { return RAISE_OPTIONS.map(r => `<option>${r}</option>`).join(''); }
+  function timelineOpts() { return TIMELINE_URGENCY.map(t => `<option>${t}</option>`).join(''); }
+
   function otherInput(id) {
     return `<input type="text" id="${id}" name="${id}" placeholder="Please specify..." style="display:none;margin-top:6px;margin-left:28px;width:calc(100% - 28px);" />`;
   }
+
   function chkItem(name, value) {
-    const isOther = value === 'Other' || value === 'Other (Specify)';
+    const isOther = value === 'Other' || value === 'Other / Miscellaneous';
     const inputId = isOther ? `${name}_other_text` : '';
     const cb = `<input type="checkbox" name="${name}" value="${value}" ${isOther ? `onchange="toggleOther(this,'${inputId}')"` : ''} />`;
     return `<label class="checkbox-item">${cb}<span>${value}</span></label>${isOther ? otherInput(inputId) : ''}`;
   }
-  function offerChks(prefix) { return OFFERS.map(t => chkItem(`${prefix}_offer_type`, t)).join(''); }
-  function seekChks(prefix) { return SEEKING.map(t => chkItem(`${prefix}_seeking_type`, t)).join(''); }
+
   function toggleOther(cb, inputId) {
     const inp = document.getElementById(inputId);
     if (!inp) return;
@@ -405,12 +645,28 @@
     if (!cb.checked) inp.value = '';
   }
 
+  function buildServicesGrid(prefix) {
+    let html = '<div class="services-grid">';
+    html += '<div class="services-header"><span>Service</span><span>Seeking</span><span>Can Offer</span></div>';
+    PROFESSIONAL_SERVICES.forEach(svc => {
+      const safeName = svc.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+      html += `<div class="services-row">
+        <span class="svc-name">${svc}</span>
+        <span class="svc-check"><input type="checkbox" name="${prefix}_svc_seeking" value="${svc}" /></span>
+        <span class="svc-check"><input type="checkbox" name="${prefix}_svc_offer" value="${svc}" /></span>
+      </div>`;
+    });
+    html += '</div>';
+    return html;
+  }
+
+  // ── Company blocks ──
   let companyCount = 0;
 
   function buildCompanyBlock(idx, isFirst) {
     const prefix = `co_${idx}`;
     const label = isFirst ? '02 — Primary Company' : `Additional Company ${idx}`;
-    const rmBtn = isFirst ? '' : `<button type="button" class="remove-btn" onclick="removeBlock(this)">✕ Remove</button>`;
+    const rmBtn = isFirst ? '' : `<button type="button" class="remove-btn" onclick="removeBlock(this)">&#10005; Remove</button>`;
     const extraClass = isFirst ? '' : ' additional';
     return `<div class="company-block${extraClass}" data-idx="${idx}">${rmBtn}
 <div class="block-label">${label}</div>
@@ -418,15 +674,22 @@
 <div class="field"><label>Company Website</label><input type="url" name="${prefix}_website" placeholder="https://yourcompany.com" /></div>
 <div class="field"><label>Your Role / Title</label><input type="text" name="${prefix}_title" placeholder="Founder & CEO" /></div>
 <div class="field"><label>Vertical</label><select name="${prefix}_vertical"><option value="" disabled selected>Select one...</option>${verticalOpts()}</select></div>
-<div class="field"><label>Stage</label><select name="${prefix}_stage"><option value="" disabled selected>Select one...</option><option>Idea / Pre-incorporated</option><option>Pre-seed</option><option>Seed</option><option>Series A</option><option>Series B+</option><option>Growth / Late Stage</option><option>Investor (evaluating deals)</option><option>N/A — Service / Advisory</option></select></div>
-<div class="field"><label>How much are you raising?</label><select name="${prefix}_raise"><option value="" disabled selected>Select one...</option><option>Not currently raising</option><option>Under $500K</option><option>$500K – $1M</option><option>$1M – $3M</option><option>$3M – $5M</option><option>$5M – $10M</option><option>$10M – $25M</option><option>$25M+</option><option>N/A — Investor</option></select></div>
+<div class="field"><label>Modality</label><select name="${prefix}_modality"><option value="" disabled selected>Select one...</option>${modalityOpts()}</select></div>
+<div class="field"><label>Target Disease</label><select name="${prefix}_target_disease"><option value="" disabled selected>Select one...</option>${targetDiseaseOpts()}</select></div>
+<div class="two-col">
+<div class="field"><label>Company Stage</label><select name="${prefix}_company_stage"><option value="" disabled selected>Select one...</option>${companyStageOpts()}</select></div>
+<div class="field"><label>Financial Stage</label><select name="${prefix}_financial_stage"><option value="" disabled selected>Select one...</option>${financialStageOpts()}</select></div>
+</div>
+<div class="field"><label>How much are you raising?</label><select name="${prefix}_raise"><option value="" disabled selected>Select one...</option>${raiseOpts()}</select></div>
 <div class="field"><label>What does this company do?</label><textarea name="${prefix}_description" placeholder="One or two sentences..." style="min-height:80px;"></textarea></div>
 <hr class="section-divider" />
 <div class="field"><label>What can you offer through this role?</label><textarea name="${prefix}_can_offer" placeholder="What do you bring to the table?" style="min-height:70px;"></textarea></div>
-<div class="field"><label>Connections you can make</label><div class="checkbox-group">${offerChks(prefix)}</div></div>
-<hr class="section-divider" />
 <div class="field"><label>What are you looking for through this role?</label><textarea name="${prefix}_looking_for" placeholder="What do you need for this company?" style="min-height:70px;"></textarea></div>
-<div class="field"><label>Types of connections you're seeking</label><div class="checkbox-group">${seekChks(prefix)}</div></div>
+<div class="field"><label>Types of connections you're seeking</label><textarea name="${prefix}_connections_seeking" placeholder="Describe the types of connections you need..." style="min-height:70px;"></textarea></div>
+<div class="field"><label>What is your number one priority in the next 90 days?</label><textarea name="${prefix}_priority_90" placeholder="Your top priority for this company..." style="min-height:70px;"></textarea></div>
+<hr class="section-divider" />
+<div class="field"><label>Professional Services</label><p class="hint" style="margin-bottom:10px;">Check which services you are seeking and which you can offer.</p>${buildServicesGrid(prefix)}</div>
+<div class="field"><label>Seeking Timeline | Urgency</label><select name="${prefix}_seeking_timeline"><option value="" disabled selected>Select one...</option>${timelineOpts()}</select></div>
 </div>`;
   }
 
@@ -442,15 +705,27 @@
 
   // ── Investor toggle ──
   function toggleInvestor(el) {
-    document.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active'));
+    const parent = el.closest('.toggle-options');
+    parent.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active'));
     el.classList.add('active');
     document.getElementById('deployingCapitalInput').value = el.dataset.val;
     document.getElementById('investorFields').classList.toggle('visible', el.dataset.val === 'Yes');
   }
 
-  // ── Init checkboxes ──
-  document.getElementById('offerTypes').innerHTML = OFFERS.map(t => chkItem('offer_type', t)).join('');
-  document.getElementById('seekingTypes').innerHTML = SEEKING.map(t => chkItem('seeking_type', t)).join('');
+  // ── Generic toggle for Yes/No fields ──
+  function toggleGeneric(el, hiddenId) {
+    const parent = el.closest('.toggle-options');
+    parent.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(hiddenId).value = el.dataset.val;
+  }
+
+  // ── Init checkboxes (Step 1) ──
+  document.getElementById('communityParticipation').innerHTML = COMMUNITY_PARTICIPATION.map(t => chkItem('community_participation', t)).join('');
+  document.getElementById('connectionsOffer').innerHTML = CONNECTION_TYPES.map(t => chkItem('connections_offer', t)).join('');
+  document.getElementById('connectionsSeeking').innerHTML = CONNECTION_TYPES.map(t => chkItem('connections_seeking', t)).join('');
+
+  // ── Init investor verticals (Step 3) ──
   document.getElementById('invVerticals').innerHTML = VERTICALS.map(v => chkItem('inv_vertical', v)).join('');
 
   // ── Init first company block & progress ──
@@ -476,14 +751,14 @@
   async function enrichLinkedIn(url) {
     if (!url || !url.includes('linkedin.com/in/')) return;
 
-    showEnrichStatus('⏳ Looking up your LinkedIn profile…');
+    showEnrichStatus('&#9203; Looking up your LinkedIn profile...');
 
     try {
       const res = await fetch(`/enrich?linkedin_url=${encodeURIComponent(url)}`);
       const json = await res.json();
 
       if (!json.success || !json.profile) {
-        showEnrichStatus('⚠️ Couldn\'t find that profile — you can fill in manually.', '#8892a4');
+        showEnrichStatus('&#9888;&#65039; Couldn\'t find that profile — you can fill in manually.', '#8892a4');
         return;
       }
 
@@ -504,11 +779,11 @@
 
       const count = p.companies?.length || 0;
       showEnrichStatus(
-        `✅ Found your profile! We pre-filled ${count} company${count !== 1 ? ' blocks' : ''} on the next page.`,
+        `&#10004; Found your profile! We pre-filled ${count} company${count !== 1 ? ' blocks' : ''} on the next page.`,
         '#4caf50'
       );
     } catch (e) {
-      showEnrichStatus('⚠️ Enrichment unavailable — fill in manually.', '#8892a4');
+      showEnrichStatus('&#9888;&#65039; Enrichment unavailable — fill in manually.', '#8892a4');
     }
   }
 
@@ -560,9 +835,15 @@
     // Show a banner
     const banner = document.createElement('div');
     banner.style.cssText = 'background:rgba(76,175,80,0.1);border:1px solid rgba(76,175,80,0.3);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#4caf50;';
-    banner.innerHTML = `✅ Pre-filled ${companies.length} company block${companies.length !== 1 ? 's' : ''} from your LinkedIn. Review and edit as needed.`;
+    banner.innerHTML = `&#10004; Pre-filled ${companies.length} company block${companies.length !== 1 ? 's' : ''} from your LinkedIn. Review and edit as needed.`;
     container.parentNode.insertBefore(banner, container);
     setTimeout(() => banner.remove(), 6000);
+  }
+
+  // ── Collect array helper ──
+  function collectChecked(name) {
+    const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
+    return Array.from(checked).map(c => c.value);
   }
 
   // ── Submit ──
@@ -586,26 +867,36 @@
       }
     }
 
+    // Build companies array
     const companies = [];
     document.querySelectorAll('.company-block').forEach(block => {
       const idx = block.dataset.idx;
       const prefix = `co_${idx}`;
+      const svcSeeking = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_seeking"]:checked`)).map(c => c.value);
+      const svcOffer = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_offer"]:checked`)).map(c => c.value);
       companies.push({
         name: payload[`${prefix}_name`] || '',
         website: payload[`${prefix}_website`] || '',
         title: payload[`${prefix}_title`] || '',
         vertical: payload[`${prefix}_vertical`] || '',
-        stage: payload[`${prefix}_stage`] || '',
+        modality: payload[`${prefix}_modality`] || '',
+        target_disease: payload[`${prefix}_target_disease`] || '',
+        company_stage: payload[`${prefix}_company_stage`] || '',
+        financial_stage: payload[`${prefix}_financial_stage`] || '',
         raise: payload[`${prefix}_raise`] || '',
         description: payload[`${prefix}_description`] || '',
         can_offer: payload[`${prefix}_can_offer`] || '',
-        offer_types: Array.isArray(payload[`${prefix}_offer_type`]) ? payload[`${prefix}_offer_type`].join(', ') : (payload[`${prefix}_offer_type`] || ''),
         looking_for: payload[`${prefix}_looking_for`] || '',
-        seeking_types: Array.isArray(payload[`${prefix}_seeking_type`]) ? payload[`${prefix}_seeking_type`].join(', ') : (payload[`${prefix}_seeking_type`] || '')
+        connections_seeking: payload[`${prefix}_connections_seeking`] || '',
+        priority_90: payload[`${prefix}_priority_90`] || '',
+        services_seeking: svcSeeking.join(', '),
+        services_offer: svcOffer.join(', '),
+        seeking_timeline: payload[`${prefix}_seeking_timeline`] || ''
       });
     });
 
     const primary = companies[0] || {};
+
     const fields = {
       // Personal
       "First Name": payload.first_name || '',
@@ -617,31 +908,46 @@
       "State": payload.state || '',
       "Country": payload.country || '',
       "Member Role": payload.member_role || '',
-      // Primary company — flat columns matching Airtable
+      "Functional Expertise": payload.functional_expertise || '',
+      "Domain Accomplishments": payload.domain_accomplishments || '',
+      "Community Participation": collectChecked('community_participation').join(', '),
+      "Connections Offer": collectChecked('connections_offer').join(', '),
+      "Connection Strength": payload.connection_strength || '',
+      "Connections Seeking": collectChecked('connections_seeking').join(', '),
+      "Personal Timeline": payload.personal_timeline || '',
+      // Primary company — flat columns
       "Company": primary.name || '',
       "Title": primary.title || '',
       "Vertical": primary.vertical || '',
-      "Stage": primary.stage || '',
+      "Modality": primary.modality || '',
+      "Target Disease": primary.target_disease || '',
+      "Company Stage": primary.company_stage || '',
+      "Financial Stage": primary.financial_stage || '',
+      "Raise Amount": primary.raise || '',
       "Company Description": primary.description || '',
-      // Offer / seek
       "What You Can Offer": primary.can_offer || '',
-      "Offer Types": primary.offer_types || Array.isArray(payload.offer_type) ? (Array.isArray(payload.offer_type) ? payload.offer_type.join(', ') : payload.offer_type || '') : '',
       "Looking For": primary.looking_for || '',
-      "Seeking Types": primary.seeking_types || Array.isArray(payload.seeking_type) ? (Array.isArray(payload.seeking_type) ? payload.seeking_type.join(', ') : payload.seeking_type || '') : '',
+      "Connections Seeking (Company)": primary.connections_seeking || '',
+      "Priority 90 Days": primary.priority_90 || '',
+      "Services Seeking": primary.services_seeking || '',
+      "Services Can Offer": primary.services_offer || '',
+      "Seeking Timeline": primary.seeking_timeline || '',
       // Capital
       "Deploying Capital": payload.deploying_capital || '',
+      "Investment Mandate": payload.investment_mandate || '',
+      "Total AUM": payload.total_aum || '',
+      "Recent Fund Size": payload.recent_fund_size || '',
       "Check Size": payload.check_size || '',
       "Preferred Stage": payload.preferred_stage || '',
+      "Investment Participation": payload.investment_participation || '',
+      "Board Participation": payload.board_participation || '',
+      "Dry Powder": payload.dry_powder || '',
       "Preferred Verticals": Array.isArray(payload.inv_vertical) ? payload.inv_vertical.join(', ') : (payload.inv_vertical || ''),
+      "Investor Geography": payload.investor_geography || '',
+      "Investor Notes": payload.investor_notes || '',
       // Additional companies (2+) as JSON, primary excluded
       "Companies": companies.length > 1 ? JSON.stringify(companies.slice(1)) : '',
-      "Deploying Capital": payload.deploying_capital || '',
-      "Investment Mandate": payload.investment_mandate || '',
-      "Investor Notes": payload.investor_notes || '',
-      "What You Can Offer": payload.can_offer || '',
-      "Offer Types": Array.isArray(payload.offer_type) ? payload.offer_type.join(', ') : (payload.offer_type || ''),
-      "Looking For": payload.looking_for || '',
-      "Seeking Types": Array.isArray(payload.seeking_type) ? payload.seeking_type.join(', ') : (payload.seeking_type || ''),
+      // Final
       "Additional Notes": payload.additional_notes || '',
       "Submitted At": new Date().toISOString()
     };
