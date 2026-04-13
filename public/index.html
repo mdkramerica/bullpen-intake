@@ -141,7 +141,14 @@
     <div class="step active" data-step="1">
       <div class="card">
         <div class="card-title">01 — Tell Us About Yourself</div>
-        <div class="card-desc">Let's start with the basics. This takes about 60 seconds.</div>
+        <div class="card-desc">Paste your LinkedIn first — we'll auto-fill what we can.</div>
+        <div class="field">
+          <label>LinkedIn Profile URL <span class="required">*</span></label>
+          <input type="url" name="linkedin" id="linkedinInput" placeholder="https://linkedin.com/in/yourname" required />
+          <div id="enrichStatus" style="display:none; margin-top:8px; font-size:13px; color:#E94B2B; display:flex; align-items:center; gap:8px;"></div>
+          <p class="hint" id="linkedinHint">We'll auto-fill your name, location, and company info from your profile.</p>
+          <div class="field-error">Please enter your LinkedIn URL.</div>
+        </div>
         <div class="two-col">
           <div class="field">
             <label>First Name <span class="required">*</span></label>
@@ -162,13 +169,6 @@
         <div class="field">
           <label>Phone Number</label>
           <input type="tel" name="phone" placeholder="+1 (555) 000-0000" />
-        </div>
-        <div class="field">
-          <label>LinkedIn Profile URL <span class="required">*</span></label>
-          <input type="url" name="linkedin" id="linkedinInput" placeholder="https://linkedin.com/in/yourname" required />
-          <div id="enrichStatus" style="display:none; margin-top:8px; font-size:13px; color:#E94B2B; display:flex; align-items:center; gap:8px;"></div>
-          <p class="hint" id="linkedinHint">Paste your LinkedIn URL — we'll auto-fill your company info on the next page.</p>
-          <div class="field-error">Please enter your LinkedIn URL.</div>
         </div>
         <div class="two-col">
           <div class="field">
