@@ -22,7 +22,7 @@ app.post('/submit', async (req, res) => {
     const primary = companies[0] || {};
     const secondary = companies.slice(1);
 
-    // Map to Airtable column names (flat structure matching existing table)
+    // Map to Airtable column names (flat structure matching current form)
     const fields = {
       // Personal
       'First Name':     raw['First Name'] || '',
@@ -38,23 +38,22 @@ app.post('/submit', async (req, res) => {
       'Accomplishments': raw['Accomplishments'] || '',
       'Community Participation': raw['Community Participation'] || '',
       'Connections Offer': raw['Connections Offer'] || '',
-      'Connection Strength': raw['Connection Strength'] || '',
       'Connections Seeking': raw['Connections Seeking'] || '',
-      'Timeline Urgency': raw['Timeline Urgency'] || '',
 
       // Primary company — flat columns
       'Company':        primary.name || '',
       'Title':          primary.title || '',
       'Vertical':       primary.vertical || '',
-      'Modality':       primary.modality || '',
-      'Target Disease': primary.target_disease || '',
+      'Modality Pairs': primary.modality_pairs || '',
       'Company Stage':  primary.company_stage || '',
       'Financial Stage': primary.financial_stage || '',
-      'Raise':          primary.raise || '',
+      'Raise Amount':   primary.raise || '',
       'Priority 90 Days': primary.priority_90 || '',
-      'Professional Services Seeking': primary.services_seeking || '',
-      'Professional Services Offering': primary.services_offering || '',
-      'Seeking Timeline': primary.seeking_timeline || '',
+      'Services Seeking Now': primary.services_now || '',
+      'Services Seeking 1-6M': primary.services_1to6 || '',
+      'Services Seeking 6-12M': primary.services_6to12 || '',
+      'Services Seeking 12+M': primary.services_12plus || '',
+      'Professional Services Offering': primary.services_offer || '',
 
       // Capital
       'Deploying Capital':   raw['Deploying Capital'] || '',
@@ -73,6 +72,9 @@ app.post('/submit', async (req, res) => {
       // Additional companies (2+) stored as JSON
       'Companies': secondary.length > 0 ? JSON.stringify(secondary) : '',
 
+      // Events & final
+      'Events':          raw['Events'] || '',
+      'Privacy Accepted': raw['Privacy Accepted'] || '',
       'Additional Notes': raw['Additional Notes'] || '',
       'Submitted At':     raw['Submitted At'] || new Date().toISOString()
     };
