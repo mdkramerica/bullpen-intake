@@ -64,8 +64,6 @@
     .toggle-options { display: flex; gap: 10px; }
     .toggle-opt { padding: 8px 18px; border-radius: 8px; border: 1px solid #2a2a2a; background: #111; color: #666; font-size: 14px; cursor: pointer; transition: all 0.2s; }
     .toggle-opt.active { background: rgba(233,75,43,0.15); border-color: #E94B2B; color: #E94B2B; font-weight: 600; }
-    .investor-fields { display: none; margin-top: 20px; }
-    .investor-fields.visible { display: block; }
 
     /* ── Checkboxes ── */
     .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
@@ -120,7 +118,7 @@
   <div class="header">
     <img src="blpn-logo.jpg" alt="BLPN Logo" class="logo" />
     <div class="badge">Beta — First Wave</div>
-    <h1>Step into the <span>Bullpen</span>.</h1>
+    <h1>Step into the <span>bullpen</span>.</h1>
     <p class="subtitle">We're building a smarter way to connect inside BLPN. Tell us who you are — we'll handle the rest.</p>
   </div>
 
@@ -142,7 +140,7 @@
     <!-- STEP 1: Who You Are -->
     <div class="step active" data-step="1">
       <div class="card">
-        <div class="card-title">01 — Who You Are</div>
+        <div class="card-title">01 — Tell Us About Yourself</div>
         <div class="card-desc">Let's start with the basics. This takes about 60 seconds.</div>
         <div class="two-col">
           <div class="field">
@@ -187,7 +185,7 @@
           <input type="text" name="country" placeholder="United States" />
         </div>
         <div class="field">
-          <label>How would you describe yourself?</label>
+          <label>How would you describe your role?</label>
           <select name="member_role">
             <option value="" disabled selected>Select one...</option>
             <option>Founder | Co-Founder | Operator | Executive</option>
@@ -203,7 +201,7 @@
         </div>
         <div class="field">
           <label>Area of Functional Expertise</label>
-          <select name="functional_expertise">
+          <select name="functional_expertise" onchange="toggleSelectOther(this, 'functional_expertise_other_text', ['Other'])">
             <option value="" disabled selected>Select one...</option>
             <option>Clinical Trial Design</option>
             <option>Regulatory Strategy</option>
@@ -219,6 +217,7 @@
             <option>Supply Chain</option>
             <option>Other</option>
           </select>
+          <input type="text" id="functional_expertise_other_text" name="functional_expertise_other" placeholder="Please specify..." style="display:none;margin-top:8px;" />
         </div>
         <div class="field">
           <label>What have you successfully accomplished in this domain?</label>
@@ -279,18 +278,7 @@
     <div class="step" data-step="3">
       <div class="card">
         <div class="card-title">03 — Capital Deployment</div>
-        <div class="card-desc">Skip this if you're not actively investing.</div>
-        <div class="toggle-field">
-          <div class="toggle-row">
-            <span class="toggle-label">Are you actively deploying capital?</span>
-            <div class="toggle-options" id="deployToggleOpts">
-              <div class="toggle-opt" data-val="Yes" onclick="toggleInvestor(this)">Yes</div>
-              <div class="toggle-opt" data-val="No" onclick="toggleInvestor(this)">No</div>
-            </div>
-          </div>
-          <input type="hidden" name="deploying_capital" id="deployingCapitalInput" value="" />
-        </div>
-        <div class="investor-fields" id="investorFields">
+        <div class="card-desc">Tell us about your investment activity and mandate.</div>
           <div class="field">
             <label>Investment Mandate</label>
             <textarea name="investment_mandate" placeholder="Describe your thesis — e.g. 'Early-stage biotech, Series A, focus on oncology and rare disease'" style="min-height:80px;"></textarea>
@@ -364,7 +352,17 @@
             <label>Anything else about your investing criteria?</label>
             <textarea name="investor_notes" placeholder="Geography, co-invest appetite, lead vs follow, etc." style="min-height:70px;"></textarea>
           </div>
-        </div>
+          <hr class="section-divider" />
+          <div class="toggle-field">
+            <div class="toggle-row">
+              <span class="toggle-label">Are you actively deploying capital?</span>
+              <div class="toggle-options" id="deployToggleOpts">
+                <div class="toggle-opt" data-val="Yes" onclick="toggleGeneric(this, 'deployingCapitalInput')">Yes</div>
+                <div class="toggle-opt" data-val="No" onclick="toggleGeneric(this, 'deployingCapitalInput')">No</div>
+              </div>
+            </div>
+            <input type="hidden" name="deploying_capital" id="deployingCapitalInput" value="" />
+          </div>
       </div>
 
       <div class="nav-row">
@@ -472,7 +470,6 @@
     'Series A',
     'Series B+',
     'Growth | Late Stage',
-    'Investor',
     'NA'
   ];
 
@@ -484,8 +481,7 @@
     '$3M – $5M',
     '$5M – $10M',
     '$10M – $25M',
-    '$25M+',
-    'Investor'
+    '$25M+'
   ];
 
   const CONNECTION_TYPES = [
@@ -562,7 +558,7 @@
 
   const STEPS = 4;
   let currentStep = 1;
-  const STEP_NAMES = ['Who You Are', 'Your Company', 'Capital Deployment', 'Final Details'];
+  const STEP_NAMES = ['Tell Us About Yourself', 'Your Company', 'Capital Deployment', 'Final Details'];
 
   // ── Progress ──
   function renderDots() {
@@ -645,19 +641,39 @@
     if (!cb.checked) inp.value = '';
   }
 
+  function toggleSelectOther(select, inputId, triggerValues) {
+    const inp = document.getElementById(inputId);
+    if (!inp) return;
+    const show = triggerValues.includes(select.value);
+    inp.style.display = show ? 'block' : 'none';
+    if (!show) inp.value = '';
+  }
+
   function buildServicesGrid(prefix) {
     let html = '<div class="services-grid">';
     html += '<div class="services-header"><span>Service</span><span>Seeking</span><span>Can Offer</span></div>';
     PROFESSIONAL_SERVICES.forEach(svc => {
-      const safeName = svc.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+      const isOther = svc === 'Other';
       html += `<div class="services-row">
         <span class="svc-name">${svc}</span>
-        <span class="svc-check"><input type="checkbox" name="${prefix}_svc_seeking" value="${svc}" /></span>
-        <span class="svc-check"><input type="checkbox" name="${prefix}_svc_offer" value="${svc}" /></span>
+        <span class="svc-check"><input type="checkbox" name="${prefix}_svc_seeking" value="${svc}" ${isOther ? `onchange="toggleSvcOther('${prefix}')"` : ''} /></span>
+        <span class="svc-check"><input type="checkbox" name="${prefix}_svc_offer" value="${svc}" ${isOther ? `onchange="toggleSvcOther('${prefix}')"` : ''} /></span>
       </div>`;
     });
     html += '</div>';
+    html += `<input type="text" id="${prefix}_svc_other_text" name="${prefix}_svc_other" placeholder="Please specify other service..." style="display:none;margin-top:8px;" />`;
     return html;
+  }
+
+  function toggleSvcOther(prefix) {
+    const inp = document.getElementById(prefix + '_svc_other_text');
+    if (!inp) return;
+    const grid = inp.previousElementSibling;
+    const seekingOther = grid.querySelector(`input[name="${prefix}_svc_seeking"][value="Other"]`);
+    const offerOther = grid.querySelector(`input[name="${prefix}_svc_offer"][value="Other"]`);
+    const show = (seekingOther && seekingOther.checked) || (offerOther && offerOther.checked);
+    inp.style.display = show ? 'block' : 'none';
+    if (!show) inp.value = '';
   }
 
   // ── Company blocks ──
@@ -673,19 +689,14 @@
 <div class="field"><label>Company / Organization ${isFirst ? '<span class="required">*</span>' : ''}</label><input type="text" name="${prefix}_name" placeholder="Acme Therapeutics" ${isFirst ? 'required' : ''} />${isFirst ? '<div class="field-error">Please enter your company name.</div>' : ''}</div>
 <div class="field"><label>Company Website</label><input type="url" name="${prefix}_website" placeholder="https://yourcompany.com" /></div>
 <div class="field"><label>Your Role / Title</label><input type="text" name="${prefix}_title" placeholder="Founder & CEO" /></div>
-<div class="field"><label>Vertical</label><select name="${prefix}_vertical"><option value="" disabled selected>Select one...</option>${verticalOpts()}</select></div>
+<div class="field"><label>Vertical</label><select name="${prefix}_vertical" onchange="toggleSelectOther(this, '${prefix}_vertical_other_text', ['Other / Miscellaneous', 'Service Provider'])"><option value="" disabled selected>Select one...</option>${verticalOpts()}</select><input type="text" id="${prefix}_vertical_other_text" name="${prefix}_vertical_other" placeholder="Please specify..." style="display:none;margin-top:8px;" /></div>
 <div class="field"><label>Modality</label><select name="${prefix}_modality"><option value="" disabled selected>Select one...</option>${modalityOpts()}</select></div>
-<div class="field"><label>Target Disease</label><select name="${prefix}_target_disease"><option value="" disabled selected>Select one...</option>${targetDiseaseOpts()}</select></div>
+<div class="field"><label>Target Disease</label><select name="${prefix}_target_disease" onchange="toggleSelectOther(this, '${prefix}_target_other_text', ['Other'])"><option value="" disabled selected>Select one...</option>${targetDiseaseOpts()}</select><input type="text" id="${prefix}_target_other_text" name="${prefix}_target_other" placeholder="Please specify..." style="display:none;margin-top:8px;" /></div>
 <div class="two-col">
 <div class="field"><label>Company Stage</label><select name="${prefix}_company_stage"><option value="" disabled selected>Select one...</option>${companyStageOpts()}</select></div>
 <div class="field"><label>Financial Stage</label><select name="${prefix}_financial_stage"><option value="" disabled selected>Select one...</option>${financialStageOpts()}</select></div>
 </div>
 <div class="field"><label>How much are you raising?</label><select name="${prefix}_raise"><option value="" disabled selected>Select one...</option>${raiseOpts()}</select></div>
-<div class="field"><label>What does this company do?</label><textarea name="${prefix}_description" placeholder="One or two sentences..." style="min-height:80px;"></textarea></div>
-<hr class="section-divider" />
-<div class="field"><label>What can you offer through this role?</label><textarea name="${prefix}_can_offer" placeholder="What do you bring to the table?" style="min-height:70px;"></textarea></div>
-<div class="field"><label>What are you looking for through this role?</label><textarea name="${prefix}_looking_for" placeholder="What do you need for this company?" style="min-height:70px;"></textarea></div>
-<div class="field"><label>Types of connections you're seeking</label><textarea name="${prefix}_connections_seeking" placeholder="Describe the types of connections you need..." style="min-height:70px;"></textarea></div>
 <div class="field"><label>What is your number one priority in the next 90 days?</label><textarea name="${prefix}_priority_90" placeholder="Your top priority for this company..." style="min-height:70px;"></textarea></div>
 <hr class="section-divider" />
 <div class="field"><label>Professional Services</label><p class="hint" style="margin-bottom:10px;">Check which services you are seeking and which you can offer.</p>${buildServicesGrid(prefix)}</div>
@@ -702,15 +713,6 @@
   }
 
   function removeBlock(btn) { btn.closest('.company-block').remove(); }
-
-  // ── Investor toggle ──
-  function toggleInvestor(el) {
-    const parent = el.closest('.toggle-options');
-    parent.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById('deployingCapitalInput').value = el.dataset.val;
-    document.getElementById('investorFields').classList.toggle('visible', el.dataset.val === 'Yes');
-  }
 
   // ── Generic toggle for Yes/No fields ──
   function toggleGeneric(el, hiddenId) {
@@ -874,23 +876,24 @@
       const prefix = `co_${idx}`;
       const svcSeeking = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_seeking"]:checked`)).map(c => c.value);
       const svcOffer = Array.from(block.querySelectorAll(`input[name="${prefix}_svc_offer"]:checked`)).map(c => c.value);
+      const verticalVal = payload[`${prefix}_vertical`] || '';
+      const verticalOther = payload[`${prefix}_vertical_other`] || '';
+      const targetVal = payload[`${prefix}_target_disease`] || '';
+      const targetOther = payload[`${prefix}_target_other`] || '';
+      const svcOtherText = payload[`${prefix}_svc_other`] || '';
       companies.push({
         name: payload[`${prefix}_name`] || '',
         website: payload[`${prefix}_website`] || '',
         title: payload[`${prefix}_title`] || '',
-        vertical: payload[`${prefix}_vertical`] || '',
+        vertical: (verticalVal === 'Other / Miscellaneous' || verticalVal === 'Service Provider') && verticalOther ? `${verticalVal}: ${verticalOther}` : verticalVal,
         modality: payload[`${prefix}_modality`] || '',
-        target_disease: payload[`${prefix}_target_disease`] || '',
+        target_disease: targetVal === 'Other' && targetOther ? `Other: ${targetOther}` : targetVal,
         company_stage: payload[`${prefix}_company_stage`] || '',
         financial_stage: payload[`${prefix}_financial_stage`] || '',
         raise: payload[`${prefix}_raise`] || '',
-        description: payload[`${prefix}_description`] || '',
-        can_offer: payload[`${prefix}_can_offer`] || '',
-        looking_for: payload[`${prefix}_looking_for`] || '',
-        connections_seeking: payload[`${prefix}_connections_seeking`] || '',
         priority_90: payload[`${prefix}_priority_90`] || '',
-        services_seeking: svcSeeking.join(', '),
-        services_offer: svcOffer.join(', '),
+        services_seeking: svcSeeking.map(s => s === 'Other' && svcOtherText ? `Other: ${svcOtherText}` : s).join(', '),
+        services_offer: svcOffer.map(s => s === 'Other' && svcOtherText ? `Other: ${svcOtherText}` : s).join(', '),
         seeking_timeline: payload[`${prefix}_seeking_timeline`] || ''
       });
     });
@@ -908,7 +911,7 @@
       "State": payload.state || '',
       "Country": payload.country || '',
       "Member Role": payload.member_role || '',
-      "Functional Expertise": payload.functional_expertise || '',
+      "Functional Expertise": (payload.functional_expertise === 'Other' && payload.functional_expertise_other) ? `Other: ${payload.functional_expertise_other}` : (payload.functional_expertise || ''),
       "Domain Accomplishments": payload.domain_accomplishments || '',
       "Community Participation": collectChecked('community_participation').join(', '),
       "Connections Offer": collectChecked('connections_offer').join(', '),
@@ -924,10 +927,6 @@
       "Company Stage": primary.company_stage || '',
       "Financial Stage": primary.financial_stage || '',
       "Raise Amount": primary.raise || '',
-      "Company Description": primary.description || '',
-      "What You Can Offer": primary.can_offer || '',
-      "Looking For": primary.looking_for || '',
-      "Connections Seeking (Company)": primary.connections_seeking || '',
       "Priority 90 Days": primary.priority_90 || '',
       "Services Seeking": primary.services_seeking || '',
       "Services Can Offer": primary.services_offer || '',
