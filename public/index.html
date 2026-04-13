@@ -275,7 +275,18 @@
     <div class="step" data-step="3">
       <div class="card">
         <div class="card-title">03 — Capital Deployment</div>
-        <div class="card-desc">Tell us about your investment activity and mandate.</div>
+        <div class="card-desc">Let us know about your investment activity.</div>
+        <div class="toggle-field">
+          <div class="toggle-row">
+            <span class="toggle-label">Are you actively deploying capital?</span>
+            <div class="toggle-options" id="deployToggleOpts">
+              <div class="toggle-opt" data-val="Yes" onclick="toggleInvestor(this)">Yes</div>
+              <div class="toggle-opt" data-val="No" onclick="toggleInvestor(this)">No</div>
+            </div>
+          </div>
+          <input type="hidden" name="deploying_capital" id="deployingCapitalInput" value="" />
+        </div>
+        <div id="investorFields" style="display:none;">
           <div class="field">
             <label>Investment Mandate</label>
             <textarea name="investment_mandate" placeholder="Describe your thesis — e.g. 'Early-stage biotech, Series A, focus on oncology and rare disease'" style="min-height:80px;"></textarea>
@@ -349,17 +360,7 @@
             <label>Anything else about your investing criteria?</label>
             <textarea name="investor_notes" placeholder="Geography, co-invest appetite, lead vs follow, etc." style="min-height:70px;"></textarea>
           </div>
-          <hr class="section-divider" />
-          <div class="toggle-field">
-            <div class="toggle-row">
-              <span class="toggle-label">Are you actively deploying capital?</span>
-              <div class="toggle-options" id="deployToggleOpts">
-                <div class="toggle-opt" data-val="Yes" onclick="toggleGeneric(this, 'deployingCapitalInput')">Yes</div>
-                <div class="toggle-opt" data-val="No" onclick="toggleGeneric(this, 'deployingCapitalInput')">No</div>
-              </div>
-            </div>
-            <input type="hidden" name="deploying_capital" id="deployingCapitalInput" value="" />
-          </div>
+        </div>
       </div>
 
       <div class="nav-row">
@@ -744,6 +745,15 @@
   }
 
   function removeBlock(btn) { btn.closest('.company-block').remove(); }
+
+  // ── Investor toggle ──
+  function toggleInvestor(el) {
+    const parent = el.closest('.toggle-options');
+    parent.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('deployingCapitalInput').value = el.dataset.val;
+    document.getElementById('investorFields').style.display = el.dataset.val === 'Yes' ? 'block' : 'none';
+  }
 
   // ── Generic toggle for Yes/No fields ──
   function toggleGeneric(el, hiddenId) {
