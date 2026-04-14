@@ -139,18 +139,19 @@
       .field { margin-bottom: 14px; }
       input[type="text"], input[type="email"], input[type="url"], input[type="tel"], select, textarea { font-size: 14px; padding: 10px 12px; }
 
-      /* Grid headers — compact and readable */
-      .cb-grid-header { font-size: 9px; letter-spacing: 0; padding: 8px 8px; }
-      .cb-grid-header span:not(:first-child) { font-size: 9px; line-height: 1.2; }
+      /* Grid headers — vertical rotation on mobile for full-word readability */
+      .cb-grid-header { padding: 6px 8px; align-items: end; letter-spacing: 0; }
+      .cb-grid-header span:first-child { font-size: 9px; align-self: end; padding-bottom: 2px; }
+      .cb-grid-header span:not(:first-child) { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; font-size: 9px; padding: 4px 0; }
       .cb-grid-row { padding: 7px 8px; }
       .cb-grid-row .cb-label { font-size: 11px; line-height: 1.3; }
       .cb-grid-row .cb-check input[type="checkbox"] { width: 15px; height: 15px; }
 
       /* Grid column widths — tuned for ~355px container */
-      .cb-grid.cols-2 .cb-grid-header, .cb-grid.cols-2 .cb-grid-row { grid-template-columns: 1fr 52px 52px; }
-      .cb-grid.cols-3 .cb-grid-header, .cb-grid.cols-3 .cb-grid-row { grid-template-columns: 1fr 52px 52px 52px; }
-      .cb-grid.cols-4 .cb-grid-header, .cb-grid.cols-4 .cb-grid-row { grid-template-columns: 1fr 46px 46px 46px 46px; }
-      .cb-grid.cols-5 .cb-grid-header, .cb-grid.cols-5 .cb-grid-row { grid-template-columns: 1fr 40px 40px 40px 40px 40px; }
+      .cb-grid.cols-2 .cb-grid-header, .cb-grid.cols-2 .cb-grid-row { grid-template-columns: 1fr 44px 44px; }
+      .cb-grid.cols-3 .cb-grid-header, .cb-grid.cols-3 .cb-grid-row { grid-template-columns: 1fr 40px 40px 40px; }
+      .cb-grid.cols-4 .cb-grid-header, .cb-grid.cols-4 .cb-grid-row { grid-template-columns: 1fr 36px 36px 36px 36px; }
+      .cb-grid.cols-5 .cb-grid-header, .cb-grid.cols-5 .cb-grid-row { grid-template-columns: 1fr 34px 34px 34px 34px 34px; }
 
       /* Modality pairs */
       .modality-pair { flex-direction: column; gap: 6px; }
@@ -703,7 +704,7 @@
 
   function buildServicesGrid(prefix) {
     let html = '<div class="cb-grid cols-5">';
-    html += '<div class="cb-grid-header"><span>Service</span><span>Now</span><span>1-6M</span><span>6-12M</span><span>12+M</span><span>Offer</span></div>';
+    html += '<div class="cb-grid-header"><span>Service</span><span>Now</span><span>1-6 Mo</span><span>6-12 Mo</span><span>12+ Mo</span><span>Can Offer</span></div>';
     PROFESSIONAL_SERVICES.forEach(svc => {
       const isOther = svc === 'Other';
       const oh = isOther ? ` onchange="toggleSvcOther('${prefix}')"` : '';
@@ -767,7 +768,7 @@
   // ── Expertise grid (Task #6) ──
   function buildExpertiseGrid() {
     let html = '<div class="cb-grid cols-3">';
-    html += '<div class="cb-grid-header"><span>Expertise</span><span>Comp.</span><span>Prof.</span><span>Master</span></div>';
+    html += '<div class="cb-grid-header"><span>Expertise</span><span>Competent</span><span>Proficient</span><span>Master</span></div>';
     FUNCTIONAL_EXPERTISE.forEach(exp => {
       const isOther = exp === 'Other';
       const handler = isOther
@@ -804,7 +805,7 @@
   // ── Connections seeking timeline grid (Task #7) ──
   function buildConnectionsTimelineGrid(name) {
     let html = '<div class="cb-grid cols-4">';
-    html += '<div class="cb-grid-header"><span>Connection Type</span><span>Now</span><span>1-6M</span><span>6-12M</span><span>12+M</span></div>';
+    html += '<div class="cb-grid-header"><span>Connection Type</span><span>Now</span><span>1-6 Mo</span><span>6-12 Mo</span><span>12+ Mo</span></div>';
     CONNECTION_TYPES.forEach(ct => {
       const isOther = ct === 'Other';
       const handler = isOther
