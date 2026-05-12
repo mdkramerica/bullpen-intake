@@ -26,6 +26,24 @@
     .hero-headline h1 { font-size: 38px; font-weight: 800; line-height: 1.02; color: #fff; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
     .hero-headline h1 span { color: #fff; }
     .hero-event-banner { display: inline-block; background: #0a0a0a; color: #fff; padding: 11px 26px; font-size: 13px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; border-radius: 6px; margin-bottom: 22px; }
+
+    /* ── BIO 2026 tagline callout (edit #2) ── */
+    .hero-tagline { display: block; max-width: 640px; margin: 0 auto 22px; background: #E94B2B; color: #FFD63A; padding: 18px 28px; border-radius: 10px; font-size: 22px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; text-align: center; line-height: 1.15; }
+    .hero-tagline em { font-style: italic; font-weight: 800; }
+
+    /* ── BIO 2026 footer band (edit #3) ── */
+    .bio-footer { background: #E94B2B; color: #fff; padding: 32px 24px; margin-top: 48px; }
+    .bio-footer-inner { max-width: 640px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .bio-footer-brand { display: flex; align-items: center; gap: 14px; }
+    .bio-footer-mark { width: 44px; height: 44px; flex-shrink: 0; }
+    .bio-footer-mark img { width: 100%; height: 100%; display: block; border-radius: 4px; }
+    .bio-footer-text { line-height: 1.3; }
+    .bio-footer-title { font-size: 15px; font-weight: 800; letter-spacing: 0.5px; }
+    .bio-footer-tagline { font-size: 13px; font-weight: 500; opacity: 0.92; margin-top: 2px; }
+    .bio-footer-tagline em { font-style: italic; }
+    .bio-footer-cta a { display: inline-block; background: rgba(255,255,255,0.18); color: #fff; padding: 10px 22px; border-radius: 999px; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-decoration: none; transition: background 0.2s; }
+    .bio-footer-cta a:hover { background: rgba(255,255,255,0.28); }
+
     @media (max-width: 600px) {
       .hero-card { flex-direction: column; }
       .hero-logo-square { padding: 16px 16px 8px; }
@@ -33,6 +51,9 @@
       .hero-headline { padding: 18px 20px; text-align: center; }
       .hero-headline h1 { font-size: 28px; }
       .hero-event-banner { font-size: 11px; padding: 9px 18px; letter-spacing: 2px; }
+      .hero-tagline { font-size: 16px; padding: 14px 18px; }
+      .bio-footer-inner { flex-direction: column; text-align: center; gap: 18px; }
+      .bio-footer-brand { flex-direction: column; }
     }
 
     /* ── Progress Bar ── */
@@ -195,6 +216,7 @@
       </div>
     </div>
     <div class="hero-event-banner">BIO 2026 · SAN DIEGO · JUNE 21–24</div>
+    <div class="hero-tagline">Find Someone to Help. <em>Repeat.</em></div>
     <p class="subtitle">We're building a smarter way to connect inside BLPN. Tell us who you are — we'll handle the rest.</p>
     <p class="subtitle" style="margin-top: 14px;"><strong>Members</strong> complete this form to register for BLPN BIO Week.</p>
     <p class="subtitle" style="margin-top: 6px;"><strong>Non-Members</strong> complete this form to request an invitation to BLPN BIO Week.</p>
@@ -469,6 +491,22 @@
   </div>
 
 </div>
+
+<!-- BIO 2026 footer band (brand-aligned, edit #3) -->
+<footer class="bio-footer">
+  <div class="bio-footer-inner">
+    <div class="bio-footer-brand">
+      <div class="bio-footer-mark"><img src="blpn-logo.jpg" alt="BLPN" /></div>
+      <div class="bio-footer-text">
+        <div class="bio-footer-title">Building Legendary Professional Networks</div>
+        <div class="bio-footer-tagline">Find Someone to Help. <em>Repeat.</em></div>
+      </div>
+    </div>
+    <div class="bio-footer-cta">
+      <a href="https://blpn.club" target="_blank" rel="noopener noreferrer">blpn.club</a>
+    </div>
+  </div>
+</footer>
 
 <script>
   // ── Data Arrays ──
