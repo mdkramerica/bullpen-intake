@@ -17,6 +17,24 @@
     h1 span { color: #E94B2B; }
     .subtitle { font-size: 16px; color: #8892a4; line-height: 1.6; max-width: 500px; margin: 0 auto; }
 
+    /* ── BIO 2026 brand-aligned hero block (added 2026-05-12 per Caley brand kit) ── */
+    .hero-card { display: flex; align-items: stretch; gap: 0; max-width: 640px; margin: 0 auto 14px; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.45); }
+    .hero-logo-square { background: #0a0a0a; padding: 22px; display: flex; align-items: center; justify-content: center; }
+    .hero-logo-square img { width: 76px; height: 76px; display: block; border-radius: 6px; }
+    .hero-headline { background: #E94B2B; padding: 26px 30px; flex: 1; display: flex; flex-direction: column; justify-content: center; text-align: left; }
+    .hero-eyebrow { color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; opacity: 0.9; margin-bottom: 6px; }
+    .hero-headline h1 { font-size: 38px; font-weight: 800; line-height: 1.02; color: #fff; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
+    .hero-headline h1 span { color: #fff; }
+    .hero-event-banner { display: inline-block; background: #0a0a0a; color: #fff; padding: 11px 26px; font-size: 13px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; border-radius: 6px; margin-bottom: 22px; }
+    @media (max-width: 600px) {
+      .hero-card { flex-direction: column; }
+      .hero-logo-square { padding: 16px 16px 8px; }
+      .hero-logo-square img { width: 60px; height: 60px; }
+      .hero-headline { padding: 18px 20px; text-align: center; }
+      .hero-headline h1 { font-size: 28px; }
+      .hero-event-banner { font-size: 11px; padding: 9px 18px; letter-spacing: 2px; }
+    }
+
     /* ── Progress Bar ── */
     .progress-wrap { margin-bottom: 32px; }
     .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -165,11 +183,18 @@
 <body>
 <div class="container">
 
-  <!-- Header -->
+  <!-- Header — brand-aligned with BIO 2026 BLPN visual identity (Caley brand kit 2026-05-12) -->
   <div class="header">
-    <img src="blpn-logo.jpg" alt="BLPN Logo" class="logo" />
-    <div class="badge">BLPN BIO Week 2026</div>
-    <h1>Catch Me @ <span>BLPN</span></h1>
+    <div class="hero-card">
+      <div class="hero-logo-square">
+        <img src="blpn-logo.jpg" alt="BLPN" />
+      </div>
+      <div class="hero-headline">
+        <div class="hero-eyebrow">BLPN BIO Week 2026</div>
+        <h1>Catch Me @ <span>BLPN</span></h1>
+      </div>
+    </div>
+    <div class="hero-event-banner">BIO 2026 · SAN DIEGO · JUNE 21–24</div>
     <p class="subtitle">We're building a smarter way to connect inside BLPN. Tell us who you are — we'll handle the rest.</p>
     <p class="subtitle" style="margin-top: 14px;"><strong>Members</strong> complete this form to register for BLPN BIO Week.</p>
     <p class="subtitle" style="margin-top: 6px;"><strong>Non-Members</strong> complete this form to request an invitation to BLPN BIO Week.</p>
